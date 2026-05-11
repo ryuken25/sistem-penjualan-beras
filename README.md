@@ -182,3 +182,144 @@ http://localhost:8080
 
 ## 13. Catatan Pengembangan
 Project ini sengaja dibuat sederhana, stabil, mudah dijelaskan saat sidang, dan tidak keluar dari ruang lingkup proposal.
+
+## 14. Penjelasan Grafik Penjualan
+
+Bagian ini bisa dipakai untuk menjawab pertanyaan dosen tentang batas grafik pada dashboard dan laporan.
+
+### Grafik Penjualan Harian
+
+- Grafik harian menampilkan total penjualan per hari untuk 7 hari terakhir pada dashboard dan 14 hari terakhir pada laporan.
+- Nilai sumbu Y, misalnya Rp 450.000, bukan limit transaksi dan bukan batas maksimal penjualan.
+- Sumbu Y memakai skala otomatis dari Chart.js berdasarkan nilai terbesar pada data yang sedang tampil.
+- Jika data terbesar Rp 450.000, maka grafik akan menyesuaikan skala sekitar angka tersebut.
+- Jika nanti ada transaksi Rp 1.000.000, Rp 5.000.000, atau lebih besar, grafik tetap bisa naik mengikuti data tersebut.
+- Jadi, batas nominal grafik tidak dikunci di Rp 450.000 atau Rp 1.000.000.
+
+### Grafik Penjualan Bulanan
+
+- Grafik bulanan menampilkan perbandingan 6 bulan terakhir sampai bulan transaksi terbaru yang tersimpan di database.
+- Bulan dan tahun pada grafik tidak dibatasi hanya sampai tahun tertentu.
+- Jika data transaksi dibuat sampai tahun 2027, grafik dapat menampilkan bulan di tahun 2027.
+- Jika data transaksi dibuat sampai tahun setelahnya, grafik juga tetap mengikuti data transaksi terbaru.
+- Yang dibatasi hanya jumlah bulan yang ditampilkan, yaitu 6 bulan terakhir agar dashboard tetap ringkas dan mudah dibaca.
+
+Kesimpulan singkat untuk bimbingan: grafik tidak membatasi jumlah penjualan dan tidak membatasi tahun data. Grafik hanya mengambil rentang data tertentu agar tampilannya rapi, sedangkan nilai Y dan tahun mengikuti isi transaksi yang tersimpan di database.
+
+## 15. Tutorial Git Clone, Pull, dan Menjalankan Project
+
+Repository GitHub:
+
+```text
+https://github.com/ryuken25/sistem-penjualan-beras
+```
+
+### A. Clone Project Pertama Kali
+
+Jalankan di folder tempat ingin menyimpan project, misalnya folder `htdocs` XAMPP atau folder kerja biasa:
+
+```bash
+git clone https://github.com/ryuken25/sistem-penjualan-beras.git
+cd sistem-penjualan-beras
+```
+
+### B. Install Dependency PHP
+
+Pastikan Composer sudah terinstall, lalu jalankan:
+
+```bash
+composer install
+```
+
+### C. Siapkan File Environment
+
+Jika file `.env` sudah ikut dari repository, cukup cek isinya dan sesuaikan database lokal. Jika belum ada, copy dari file `env`:
+
+```bash
+copy env .env
+```
+
+Contoh konfigurasi database lokal:
+
+```ini
+CI_ENVIRONMENT = development
+app.baseURL = 'http://localhost:8080/'
+
+database.default.hostname = localhost
+database.default.database = sistem_penjualan_beras
+database.default.username = root
+database.default.password =
+database.default.DBDriver = MySQLi
+database.default.DBPrefix =
+database.default.port = 3306
+```
+
+### D. Buat Database
+
+Buka phpMyAdmin, lalu buat database:
+
+```sql
+CREATE DATABASE sistem_penjualan_beras CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+```
+
+### E. Jalankan Migration dan Seeder
+
+Jalankan dari root project:
+
+```bash
+php spark migrate
+php spark db:seed DatabaseSeeder
+```
+
+Jika memilih import manual, gunakan file:
+
+```text
+database_sql/penjualan_beras.sql
+```
+
+### F. Jalankan Website
+
+Opsi server bawaan CodeIgniter:
+
+```bash
+php spark serve
+```
+
+Buka browser:
+
+```text
+http://localhost:8080
+```
+
+Opsi XAMPP Apache:
+
+- Nyalakan Apache dan MySQL.
+- Simpan project di folder `htdocs` atau atur document root ke folder `public`.
+- Akses melalui browser sesuai lokasi project, misalnya `http://localhost/sistem-penjualan-beras/public/`.
+
+### G. Pull Update Terbaru
+
+Jika project sudah pernah di-clone dan ingin mengambil update terbaru dari GitHub:
+
+```bash
+cd sistem-penjualan-beras
+git pull origin main
+composer install
+php spark migrate
+```
+
+### H. Akun Login Demo
+
+Admin:
+
+```text
+Username: admin
+Password: admin12345
+```
+
+Pegawai:
+
+```text
+Username: pegawai
+Password: pegawai12345
+```
