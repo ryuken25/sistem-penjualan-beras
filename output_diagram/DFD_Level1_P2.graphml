@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:y="http://www.yworks.com/xml/graphml"
+    xmlns:yed="http://www.yworks.com/xml/yed/3"
+    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+  <key for="node" id="d0" yfiles.type="nodegraphics"/>
+  <key for="edge" id="d1" yfiles.type="edgegraphics"/>
+  <graph edgedefault="directed" id="G">
+    <node id="admin">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="55" width="120" x="40" y="140"/>
+          <y:Fill color="#F3F4F6" transparent="false"/>
+          <y:BorderStyle color="#374151" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">Admin</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="p21">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="75" width="180" x="240" y="80"/>
+          <y:Fill color="#DBEAFE" transparent="false"/>
+          <y:BorderStyle color="#1D4ED8" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">2.1 Simpan
+Data Pengguna</y:NodeLabel>
+          <y:Shape type="ellipse"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="p22">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="75" width="180" x="240" y="220"/>
+          <y:Fill color="#DBEAFE" transparent="false"/>
+          <y:BorderStyle color="#1D4ED8" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">2.2 Tampilkan
+Data Pengguna</y:NodeLabel>
+          <y:Shape type="ellipse"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="d1">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="55" width="170" x="560" y="145"/>
+          <y:Fill color="#DCFCE7" transparent="false"/>
+          <y:BorderStyle color="#15803D" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">D1 users</y:NodeLabel>
+          <y:Shape type="roundrectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge id="e1" source="admin" target="p21">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">data_pengguna</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e2" source="p21" target="d1">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">data_pengguna</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e3" source="d1" target="p22">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">info_pengguna</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e4" source="p22" target="admin">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">info_pengguna</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+  </graph>
+</graphml>

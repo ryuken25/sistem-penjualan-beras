@@ -1,0 +1,57 @@
+<mxfile host="app.diagrams.net" modified="2026-04-23T00:00:00.000Z" agent="Roo" version="24.7.17" type="device">
+  <diagram id="DFD_Level_1_P1" name="DFD Level 1 P1">
+    <mxGraphModel dx="1280" dy="720" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+    <mxCell id="n2" value="Admin" style="whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#374151;fontFamily=Arial;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="40" y="80" width="120" height="55" as="geometry" />
+    </mxCell>
+    <mxCell id="n3" value="Pegawai" style="whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#374151;fontFamily=Arial;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="40" y="210" width="120" height="55" as="geometry" />
+    </mxCell>
+    <mxCell id="n4" value="1.1 Validasi
+Login" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#1D4ED8;fontFamily=Arial;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="260" y="80" width="170" height="75" as="geometry" />
+    </mxCell>
+    <mxCell id="n5" value="1.2 Perbarui
+Profil" style="ellipse;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#1D4ED8;fontFamily=Arial;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="260" y="220" width="170" height="75" as="geometry" />
+    </mxCell>
+    <mxCell id="n6" value="D1 users" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#15803D;fontFamily=Arial;fontSize=12;arcSize=12;" vertex="1" parent="1">
+      <mxGeometry x="560" y="145" width="170" height="55" as="geometry" />
+    </mxCell>
+    <mxCell id="e7" value="data_login" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n2" target="n4">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e8" value="data_login" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n3" target="n4">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e9" value="info_akun" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n6" target="n4">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e10" value="info_autentikasi" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n4" target="n2">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e11" value="info_autentikasi" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n4" target="n3">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e12" value="data_profil" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n2" target="n5">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e13" value="data_profil" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n3" target="n5">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e14" value="data_profil_akun" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n5" target="n6">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e15" value="info_profil" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n5" target="n2">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e16" value="info_profil" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n5" target="n3">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

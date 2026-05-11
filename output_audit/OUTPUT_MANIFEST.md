@@ -1,0 +1,48 @@
+# OUTPUT MANIFEST
+
+- `audit/AUDIT_DFD_BALANCING.md` : Dokumen audit konsistensi dan manifest
+- `audit/AUDIT_DOC_BAB4.md` : Dokumen audit konsistensi dan manifest
+- `audit/AUDIT_PROGRAM.md` : Dokumen audit konsistensi dan manifest
+- `diagram/DFD_Level0.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level0.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P1.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P1.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P2.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P2.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P3.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P3.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P4.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P4.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P5.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P5.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P6.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/DFD_Level1_P6.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/Diagram_Konteks.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/Diagram_Konteks.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/ERD_Chen.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/ERD_Chen.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/ERD_CrowsFoot.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/ERD_CrowsFoot.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/Konseptual_Basis_Data.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/Konseptual_Basis_Data.graphml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/Struktur_Tabel_Relasi.drawio.xml` : File diagram final dalam format graphml atau drawio xml
+- `diagram/Struktur_Tabel_Relasi.graphml` : File diagram final dalam format graphml atau drawio xml
+- `docs/4.4.4.5.docx` : Dokumen BAB 4 final dalam format docx
+- `docs/BAB_4_1_Analisis.docx` : Dokumen BAB 4 final dalam format docx
+- `docs/BAB_4_1_sampai_4_5.docx` : Dokumen BAB 4 final dalam format docx
+- `docs/BAB_4_2_Desain.docx` : Dokumen BAB 4 final dalam format docx
+- `docs/BAB_4_3_Perancangan_Basis_Data.docx` : Dokumen BAB 4 final dalam format docx
+- `screenshots/01_Login.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/02_Dashboard_Admin.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/03_Kelola_Pengguna.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/04_Kelola_Produk.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/05_Kelola_Harga.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/06_Template_Transaksi.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/07_Mode_Limit.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/08_Laporan_Penjualan.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/09_Grafik_Penjualan.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/10_Profil_Admin.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/11_Dashboard_Pegawai.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/12_Transaksi_Manual.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/13_Transaksi_Template.png` : Screenshot implementasi nyata dari aplikasi berjalan
+- `screenshots/14_Riwayat_Transaksi.png` : Screenshot implementasi nyata dari aplikasi berjalan

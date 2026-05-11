@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:y="http://www.yworks.com/xml/graphml"
+    xmlns:yed="http://www.yworks.com/xml/yed/3"
+    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+  <key for="node" id="d0" yfiles.type="nodegraphics"/>
+  <key for="edge" id="d1" yfiles.type="edgegraphics"/>
+  <graph edgedefault="directed" id="G">
+    <node id="users">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="120" width="180" x="40" y="30"/>
+          <y:Fill color="#F8FAFC" transparent="false"/>
+          <y:BorderStyle color="#0F172A" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">users
+PK id
+full_name
+username
+role
+is_active</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="products">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="120" width="180" x="40" y="250"/>
+          <y:Fill color="#F8FAFC" transparent="false"/>
+          <y:BorderStyle color="#0F172A" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">products
+PK id
+product_code
+product_name
+weight_kg
+is_active</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="prices">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="140" width="200" x="310" y="30"/>
+          <y:Fill color="#F8FAFC" transparent="false"/>
+          <y:BorderStyle color="#0F172A" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">product_prices
+PK id
+FK product_id
+price
+effective_date
+is_current
+FK updated_by</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="qt">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="165" width="200" x="310" y="220"/>
+          <y:Fill color="#F8FAFC" transparent="false"/>
+          <y:BorderStyle color="#0F172A" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">quick_templates
+PK id
+template_code
+template_name
+qty_5kg
+qty_10kg
+qty_25kg
+FK created_by</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="qti">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="120" width="200" x="600" y="220"/>
+          <y:Fill color="#F8FAFC" transparent="false"/>
+          <y:BorderStyle color="#0F172A" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">quick_template_items
+PK id
+FK template_id
+FK product_id
+quantity</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="limit">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="110" width="200" x="310" y="430"/>
+          <y:Fill color="#F8FAFC" transparent="false"/>
+          <y:BorderStyle color="#0F172A" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">sale_limit_settings
+PK id
+is_enabled
+max_total_kg
+FK updated_by</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="st">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="170" width="215" x="600" y="20"/>
+          <y:Fill color="#F8FAFC" transparent="false"/>
+          <y:BorderStyle color="#0F172A" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">sales_transactions
+PK id
+invoice_number
+transaction_date
+FK created_by
+FK template_id
+total_items
+total_kg
+grand_total</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="sti">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="130" width="210" x="900" y="40"/>
+          <y:Fill color="#F8FAFC" transparent="false"/>
+          <y:BorderStyle color="#0F172A" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">sales_transaction_items
+PK id
+FK transaction_id
+FK product_id
+quantity
+subtotal
+total_kg_item</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge id="e1" source="users" target="prices">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">1:N updated_by</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e2" source="users" target="qt">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">1:N created_by</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e3" source="users" target="limit">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">1:N updated_by</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e4" source="users" target="st">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">1:N created_by</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e5" source="products" target="prices">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">1:N product_id</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e6" source="products" target="qti">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">1:N product_id</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e7" source="products" target="sti">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">1:N product_id</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e8" source="qt" target="qti">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">1:N template_id</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e9" source="qt" target="st">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">1:N template_id</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e10" source="st" target="sti">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">1:N transaction_id</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+  </graph>
+</graphml>

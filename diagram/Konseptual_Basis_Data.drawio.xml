@@ -1,0 +1,36 @@
+<mxfile host="app.diagrams.net" modified="2026-04-23T00:00:00.000Z" agent="Roo" version="24.7.17" type="device">
+  <diagram id="Konseptual_Basis_Data" name="Konseptual Basis Data">
+    <mxGraphModel dx="1280" dy="720" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+    <mxCell id="n2" value="Kelompok Master
+users
+products
+product_prices" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#7C3AED;fontFamily=Arial;fontSize=12;arcSize=12;" vertex="1" parent="1">
+      <mxGeometry x="80" y="120" width="220" height="140" as="geometry" />
+    </mxCell>
+    <mxCell id="n3" value="Kelompok Konfigurasi
+quick_templates
+quick_template_items
+sale_limit_settings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#7C3AED;fontFamily=Arial;fontSize=12;arcSize=12;" vertex="1" parent="1">
+      <mxGeometry x="390" y="120" width="260" height="160" as="geometry" />
+    </mxCell>
+    <mxCell id="n4" value="Kelompok Transaksi
+sales_transactions
+sales_transaction_items" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#7C3AED;fontFamily=Arial;fontSize=12;arcSize=12;" vertex="1" parent="1">
+      <mxGeometry x="760" y="120" width="250" height="130" as="geometry" />
+    </mxCell>
+    <mxCell id="e5" value="info_master_produk_pengguna" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n2" target="n3">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e6" value="info_master_produk_pengguna" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n2" target="n4">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e7" value="info_template_dan_limit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#4B5563;fontFamily=Arial;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="n3" target="n4">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

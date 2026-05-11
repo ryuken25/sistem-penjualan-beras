@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:y="http://www.yworks.com/xml/graphml"
+    xmlns:yed="http://www.yworks.com/xml/yed/3"
+    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+  <key for="node" id="d0" yfiles.type="nodegraphics"/>
+  <key for="edge" id="d1" yfiles.type="edgegraphics"/>
+  <graph edgedefault="directed" id="G">
+    <node id="admin">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="60" width="130" x="60" y="180"/>
+          <y:Fill color="#F3F4F6" transparent="false"/>
+          <y:BorderStyle color="#374151" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">Admin</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="system">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="100" width="240" x="320" y="150"/>
+          <y:Fill color="#DBEAFE" transparent="false"/>
+          <y:BorderStyle color="#1D4ED8" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">Sistem Informasi
+Penjualan Beras</y:NodeLabel>
+          <y:Shape type="ellipse"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="pegawai">
+      <data key="d0">
+        <y:ShapeNode>
+          <y:Geometry height="60" width="130" x="690" y="180"/>
+          <y:Fill color="#F3F4F6" transparent="false"/>
+          <y:BorderStyle color="#374151" type="line" width="1.5"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Arial" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="c" textColor="#111827" verticalTextPosition="center" visible="true">Pegawai</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge id="e1" source="admin" target="system">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">data_login
+data_profil
+data_pengguna
+data_produk_harga
+data_template_limit
+data_permintaan_laporan</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e2" source="system" target="admin">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">info_autentikasi
+info_dashboard_admin
+info_pengguna
+info_produk_harga
+info_template_limit
+info_transaksi
+info_laporan_grafik</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e3" source="pegawai" target="system">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">data_login
+data_profil
+data_transaksi
+data_pilih_template
+data_permintaan_dashboard</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="e4" source="system" target="pegawai">
+      <data key="d1">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
+          <y:LineStyle color="#4B5563" type="line" width="1.2"/>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel alignment="center" backgroundColor="#FFFFFF" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Arial" fontSize="11" fontStyle="plain" hasLineColor="false" modelName="centered" modelPosition="center" preferredPlacement="anywhere" ratio="0.5" textColor="#111827" visible="true">info_autentikasi
+info_dashboard_pegawai
+info_profil
+info_template_transaksi
+info_transaksi</y:EdgeLabel>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+  </graph>
+</graphml>

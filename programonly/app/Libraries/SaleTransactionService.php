@@ -1,0 +1,249 @@
+<?php
+
+namespace App\Libraries;
+
+use App\Models\ProductModel;
+use App\Models\SaleLimitSettingModel;
+use App\Models\SalesTransactionItemModel;
+use App\Models\SalesTransactionModel;
+use CodeIgniter\Database\BaseConnection;
+use CodeIgniter\I18n\Time;
+use RuntimeException;
+
+class SaleTransactionService
+{
+    private BaseConnection $db;
+    private ProductModel $productModel;
+    private SalesTransactionModel $salesTransactionModel;
+    private SalesTransactionItemModel $salesTransactionItemModel;
+    private SaleLimitSettingModel $saleLimitSettingModel;
+
+    public function __construct()
+    {
+        $this->db = db_connect();
+        $this->productModel = new ProductModel();
+        $this->salesTransactionModel = new SalesTransactionModel();
+        $this->salesTransactionItemModel = new SalesTransactionItemModel();
+        $this->saleLimitSettingModel = new SaleLimitSettingModel();
+    }
+
+    public function createTransaction(array $payload, int $createdBy): array
+    {
+        $transactionDate = $this->normalizeTransactionDate($payload['transaction_date'] ?? null);
+        $packageData = $this->preparePackageTransaction($payload);
+        $items = $packageData['items'];
+        $totals = $packageData['totals'];
+        $setting = $this->saleLimitSettingModel->getCurrentSetting();
+
+        if ($setting !== null && (int) $setting['is_enabled'] === 1 && $totals['total_kg'] > (float) $setting['max_total_kg']) {
+            throw new RuntimeException('Transaksi melebihi batas maksimum ' . format_kg($setting['max_total_kg']) . '.');
+        }
+
+        $invoiceNumber = $this->generateInvoiceNumber($transactionDate);
+
+        $this->db->transStart();
+
+        $transactionId = $this->salesTransactionModel->insert([
+            'invoice_number' => $invoiceNumber,
+            'transaction_date' => $transactionDate,
+            'created_by' => $createdBy,
+            'template_id' => !empty($payload['template_id']) ? (int) $payload['template_id'] : null,
+            'customer_name' => trim((string) ($payload['customer_name'] ?? '')) ?: null,
+            'qty_5kg' => $packageData['qty']['5'],
+            'qty_10kg' => $packageData['qty']['10'],
+            'qty_25kg' => $packageData['qty']['25'],
+            'price_5kg' => $packageData['price']['5'],
+            'price_10kg' => $packageData['price']['10'],
+            'price_25kg' => $packageData['price']['25'],
+            'subtotal_5kg' => $packageData['subtotal']['5'],
+            'subtotal_10kg' => $packageData['subtotal']['10'],
+            'subtotal_25kg' => $packageData['subtotal']['25'],
+            'total_items' => $totals['total_items'],
+            'total_kg' => $totals['total_kg'],
+            'total_harga' => $totals['grand_total'],
+            'grand_total' => $totals['grand_total'],
+            'source_transaksi' => (string) ($payload['source_transaksi'] ?? (!empty($payload['template_id']) ? 'template' : 'manual')),
+            'notes' => trim((string) ($payload['notes'] ?? '')) ?: null,
+        ], true);
+
+        foreach ($items as $item) {
+            $item['transaction_id'] = $transactionId;
+            $this->salesTransactionItemModel->insert($item);
+        }
+
+        $this->db->transComplete();
+
+        if (!$this->db->transStatus()) {
+            throw new RuntimeException('Gagal menyimpan transaksi ke database.');
+        }
+
+        return [
+            'transaction' => $this->salesTransactionModel->getTransactionDetail((int) $transactionId),
+            'items' => $this->salesTransactionItemModel->getItemsByTransaction((int) $transactionId),
+        ];
+    }
+
+    public function preparePackageTransaction(array $payload): array
+    {
+        $qty = $this->extractFixedQuantities($payload);
+        if ($qty['5'] === 0 && $qty['10'] === 0 && $qty['25'] === 0) {
+            throw new RuntimeException('Minimal satu qty harus diisi.');
+        }
+
+        $packages = $this->productModel->getFixedPackagesWithCurrentPrice();
+
+        foreach ([5, 10, 25] as $weight) {
+            if (!isset($packages[$weight])) {
+                throw new RuntimeException('Data produk beras ' . $weight . ' kg belum tersedia.');
+            }
+
+            if ($packages[$weight]['current_price'] === null) {
+                throw new RuntimeException('Harga aktif untuk beras ' . $weight . ' kg belum diatur admin.');
+            }
+        }
+
+        $price = [
+            '5' => (float) $packages[5]['current_price'],
+            '10' => (float) $packages[10]['current_price'],
+            '25' => (float) $packages[25]['current_price'],
+        ];
+
+        $subtotal = [
+            '5' => $price['5'] * $qty['5'],
+            '10' => $price['10'] * $qty['10'],
+            '25' => $price['25'] * $qty['25'],
+        ];
+
+        $items = [];
+        foreach ([5, 10, 25] as $weight) {
+            $key = (string) $weight;
+            if ($qty[$key] <= 0) {
+                continue;
+            }
+
+            $items[] = [
+                'product_id' => (int) $packages[$weight]['id'],
+                'product_name_snapshot' => $packages[$weight]['product_name'],
+                'weight_kg_snapshot' => (float) $packages[$weight]['weight_kg'],
+                'unit_price_snapshot' => $price[$key],
+                'quantity' => $qty[$key],
+                'subtotal' => $subtotal[$key],
+                'total_kg_item' => $weight * $qty[$key],
+            ];
+        }
+
+        return [
+            'qty' => $qty,
+            'price' => $price,
+            'subtotal' => $subtotal,
+            'items' => $items,
+            'totals' => $this->calculateTotals($items),
+        ];
+    }
+
+    public function calculateTotals(array $items): array
+    {
+        $totalItems = 0;
+        $totalKg = 0.0;
+        $grandTotal = 0.0;
+
+        foreach ($items as $item) {
+            $totalItems += (int) $item['quantity'];
+            $totalKg += (float) $item['total_kg_item'];
+            $grandTotal += (float) $item['subtotal'];
+        }
+
+        return [
+            'total_items' => $totalItems,
+            'total_kg' => $totalKg,
+            'grand_total' => $grandTotal,
+        ];
+    }
+
+    private function extractFixedQuantities(array $payload): array
+    {
+        if (array_key_exists('qty_5kg', $payload) || array_key_exists('qty_10kg', $payload) || array_key_exists('qty_25kg', $payload)) {
+            return [
+                '5' => $this->normalizeQtyValue($payload['qty_5kg'] ?? 0, 'Beras 5 kg'),
+                '10' => $this->normalizeQtyValue($payload['qty_10kg'] ?? 0, 'Beras 10 kg'),
+                '25' => $this->normalizeQtyValue($payload['qty_25kg'] ?? 0, 'Beras 25 kg'),
+            ];
+        }
+
+        $qty = ['5' => 0, '10' => 0, '25' => 0];
+        $items = $payload['items'] ?? [];
+        if (!is_array($items)) {
+            return $qty;
+        }
+
+        $products = $this->productModel->getFixedPackagesWithCurrentPrice();
+        $productWeightMap = [];
+
+        foreach ($products as $weight => $product) {
+            $productWeightMap[(int) $product['id']] = (string) $weight;
+        }
+
+        foreach ($items as $item) {
+            $productId = isset($item['product_id']) ? (int) $item['product_id'] : 0;
+            if ($productId <= 0) {
+                continue;
+            }
+
+            $weightKey = $productWeightMap[$productId] ?? null;
+            if ($weightKey === null) {
+                continue;
+            }
+
+            $qty[$weightKey] += $this->normalizeQtyValue($item['quantity'] ?? 0, 'Beras ' . $weightKey . ' kg');
+        }
+
+        return $qty;
+    }
+
+    private function normalizeQtyValue(mixed $value, string $label): int
+    {
+        $stringValue = trim((string) $value);
+        if ($stringValue === '') {
+            return 0;
+        }
+
+        if (!preg_match('/^\d+$/', $stringValue)) {
+            throw new RuntimeException('Qty untuk ' . $label . ' harus berupa angka bulat 0 atau lebih.');
+        }
+
+        return (int) $stringValue;
+    }
+
+    public function generateInvoiceNumber(string $transactionDate): string
+    {
+        $datePart = date('Ymd', strtotime($transactionDate));
+        $prefix = 'TRX-' . $datePart . '-';
+        $latest = $this->salesTransactionModel->getLatestInvoiceForDate($datePart);
+        $number = 1;
+
+        if ($latest !== null && preg_match('/(\d{4})$/', (string) $latest['invoice_number'], $matches) === 1) {
+            $number = ((int) $matches[1]) + 1;
+        }
+
+        return $prefix . str_pad((string) $number, 4, '0', STR_PAD_LEFT);
+    }
+
+    private function normalizeTransactionDate(?string $transactionDate): string
+    {
+        if ($transactionDate === null || trim($transactionDate) === '') {
+            return Time::now('Asia/Makassar')->toDateTimeString();
+        }
+
+        $normalized = str_replace('T', ' ', trim($transactionDate));
+
+        if (strlen($normalized) === 16) {
+            $normalized .= ':00';
+        }
+
+        if (strtotime($normalized) === false) {
+            throw new RuntimeException('Format tanggal transaksi tidak valid.');
+        }
+
+        return date('Y-m-d H:i:s', strtotime($normalized));
+    }
+}
