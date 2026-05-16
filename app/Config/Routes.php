@@ -24,6 +24,7 @@ $routes->group('sales', ['filter' => 'auth'], static function (RouteCollection $
     $routes->get('create', 'SalesController::create');
     $routes->get('template', 'SalesController::template');
     $routes->post('store', 'SalesController::store');
+    $routes->get('invoice/(:num)', 'SalesController::invoice/$1');
 });
 
 $routes->group('admin', ['filter' => 'role:admin'], static function (RouteCollection $routes): void {
@@ -43,6 +44,7 @@ $routes->group('admin', ['filter' => 'role:admin'], static function (RouteCollec
 
     $routes->get('prices', 'PricesController::index');
     $routes->post('prices/update/(:num)', 'PricesController::update/$1');
+    $routes->post('prices/bulk-adjust', 'PricesController::bulkAdjust');
 
     $routes->get('templates', 'QuickTemplatesController::index');
     $routes->get('templates/create', 'QuickTemplatesController::create');

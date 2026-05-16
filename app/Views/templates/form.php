@@ -61,8 +61,8 @@ foreach ($products as $product) {
                                     <thead class="table-light">
                                         <tr>
                                             <th>Kemasan</th>
-                                            <th class="text-center" style="width: 160px;">Jumlah Default</th>
-                                            <th style="width: 220px;">Harga Aktif</th>
+                                            <th class="text-center" style="width: 160px;">Jumlah Default (sak)</th>
+                                            <th style="width: 220px;">Harga Aktif (per kg)</th>
                                             <th style="width: 220px;">Estimasi Subtotal</th>
                                         </tr>
                                     </thead>
@@ -149,7 +149,7 @@ foreach ($products as $product) {
             const weight = Number(input.dataset.weight || 0);
             const price = Number(input.dataset.price || 0);
             const qty = Number(input.value || 0);
-            const subtotal = price * qty;
+            const subtotal = price * qty * weight;
 
             totalQty += qty;
             grandTotal += subtotal;

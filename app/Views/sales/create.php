@@ -123,8 +123,8 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
                                     <thead class="table-light">
                                         <tr>
                                             <th>Kemasan</th>
-                                            <th class="text-center" style="width: 140px;">Jumlah</th>
-                                            <th style="width: 180px;">Harga Aktif</th>
+                                            <th class="text-center" style="width: 140px;">Jumlah (sak)</th>
+                                            <th style="width: 180px;">Harga (per kg)</th>
                                             <th style="width: 180px;">Subtotal</th>
                                             <th style="width: 160px;">Total Kg</th>
                                         </tr>
@@ -217,14 +217,19 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
 
         <div class="card card-soft mb-4">
             <div class="card-body">
-                <h2 class="h5 mb-3">Harga Aktif Kemasan</h2>
+                <h2 class="h5 mb-3">Harga Aktif (per kg)</h2>
                 <div class="d-grid gap-3">
                     <?php foreach ([5, 10, 25] as $weight): ?>
-                        <?php $product = $productMap[$weight] ?? null; ?>
+                        <?php
+                        $product = $productMap[$weight] ?? null;
+                        $pricePerKg = (float) ($product['current_price'] ?? 0);
+                        $pricePerSak = $pricePerKg * $weight;
+                        ?>
                         <div class="border rounded-4 p-3 bg-light-subtle">
                             <div class="fw-semibold">Beras <?= esc((string) $weight) ?> kg</div>
-                            <div class="small-muted">Harga aktif saat ini</div>
-                            <div class="h5 mt-2 mb-0"><?= format_rupiah($product['current_price'] ?? 0) ?></div>
+                            <div class="small-muted">Harga aktif per kg</div>
+                            <div class="h5 mt-2 mb-0"><?= format_rupiah($pricePerKg) ?></div>
+                            <div class="small text-muted mt-1">Per sak ≈ <?= format_rupiah($pricePerSak) ?></div>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -273,8 +278,8 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
                         <thead class="table-light">
                             <tr>
                                 <th>Kemasan</th>
-                                <th>Jumlah</th>
-                                <th>Harga</th>
+                                <th>Jumlah (sak)</th>
+                                <th>Harga (per kg)</th>
                                 <th>Subtotal</th>
                                 <th>Total Kg</th>
                             </tr>
@@ -383,9 +388,9 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
         const qty25 = normalizeQty(qtyInputs[25].value);
 
         const invalidField = [qty5, qty10, qty25].some((qty) => Number.isNaN(qty));
-        const subtotal5 = (Number.isNaN(qty5) ? 0 : qty5) * packagePrices[5];
-        const subtotal10 = (Number.isNaN(qty10) ? 0 : qty10) * packagePrices[10];
-        const subtotal25 = (Number.isNaN(qty25) ? 0 : qty25) * packagePrices[25];
+        const subtotal5 = (Number.isNaN(qty5) ? 0 : qty5) * 5 * packagePrices[5];
+        const subtotal10 = (Number.isNaN(qty10) ? 0 : qty10) * 10 * packagePrices[10];
+        const subtotal25 = (Number.isNaN(qty25) ? 0 : qty25) * 25 * packagePrices[25];
 
         return {
             invalidField,

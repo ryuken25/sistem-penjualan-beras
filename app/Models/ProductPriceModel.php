@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use RuntimeException;
 
 class ProductPriceModel extends Model
 {
@@ -13,6 +14,7 @@ class ProductPriceModel extends Model
     protected $allowedFields = [
         'product_id',
         'price',
+        'price_change',
         'is_current',
         'updated_by',
     ];
@@ -55,6 +57,10 @@ class ProductPriceModel extends Model
 
     public function replaceCurrentPrice(int $productId, float $price, int $updatedBy): void
     {
+        $previous = $this->getCurrentPrice($productId);
+        $previousPrice = $previous !== null ? (float) $previous['price'] : 0.0;
+        $delta = $previous !== null ? ($price - $previousPrice) : 0.0;
+
         $this->builder()
             ->where('product_id', $productId)
             ->where('is_current', 1)
@@ -66,8 +72,47 @@ class ProductPriceModel extends Model
         $this->insert([
             'product_id' => $productId,
             'price' => $price,
+            'price_change' => $delta,
             'is_current' => 1,
             'updated_by' => $updatedBy,
         ]);
+    }
+
+    public function bulkAdjust(float $delta, int $updatedBy): array
+    {
+        if ($delta === 0.0) {
+            throw new RuntimeException('Nilai penyesuaian tidak boleh 0.');
+        }
+
+        $productModel = new ProductModel();
+        $packages = $productModel->getFixedPackagesWithCurrentPrice();
+        $updated = [];
+
+        foreach ([5, 10, 25] as $weight) {
+            if (!isset($packages[$weight])) {
+                throw new RuntimeException('Data produk beras ' . $weight . ' kg belum tersedia.');
+            }
+
+            $current = $packages[$weight]['current_price'];
+            if ($current === null) {
+                throw new RuntimeException('Harga aktif untuk beras ' . $weight . ' kg belum diatur. Atur harga awal terlebih dahulu.');
+            }
+
+            $newPrice = (float) $current + $delta;
+            if ($newPrice <= 0) {
+                throw new RuntimeException('Penyesuaian membuat harga beras ' . $weight . ' kg menjadi nol atau negatif.');
+            }
+
+            $this->replaceCurrentPrice((int) $packages[$weight]['id'], $newPrice, $updatedBy);
+
+            $updated[$weight] = [
+                'product_id' => (int) $packages[$weight]['id'],
+                'previous_price' => (float) $current,
+                'new_price' => $newPrice,
+                'delta' => $delta,
+            ];
+        }
+
+        return $updated;
     }
 }

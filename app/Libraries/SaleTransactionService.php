@@ -78,6 +78,7 @@ class SaleTransactionService
         }
 
         return [
+            'transaction_id' => (int) $transactionId,
             'transaction' => $this->salesTransactionModel->getTransactionDetail((int) $transactionId),
             'items' => $this->salesTransactionItemModel->getItemsByTransaction((int) $transactionId),
         ];
@@ -109,9 +110,9 @@ class SaleTransactionService
         ];
 
         $subtotal = [
-            '5' => $price['5'] * $qty['5'],
-            '10' => $price['10'] * $qty['10'],
-            '25' => $price['25'] * $qty['25'],
+            '5'  => 5  * $qty['5']  * $price['5'],
+            '10' => 10 * $qty['10'] * $price['10'],
+            '25' => 25 * $qty['25'] * $price['25'],
         ];
 
         $items = [];

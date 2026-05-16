@@ -106,6 +106,24 @@ class SalesController extends BaseController
             return redirect()->back()->withInput()->with('error', $exception->getMessage());
         }
 
-        return redirect()->to('/sales')->with('success', 'Transaksi berhasil disimpan dengan nomor ' . $transaction['transaction']['invoice_number'] . '.');
+        return redirect()->to('/sales/invoice/' . $transaction['transaction_id'])
+            ->with('success', 'Transaksi berhasil disimpan dengan nomor ' . $transaction['transaction']['invoice_number'] . '.');
+    }
+
+    public function invoice(int $id)
+    {
+        $userId = is_admin() ? null : current_user_id();
+        $transaction = $this->salesTransactionModel->getTransactionDetail($id, $userId);
+
+        if ($transaction === null) {
+            return redirect()->to('/sales')->with('error', 'Transaksi tidak ditemukan atau Anda tidak memiliki akses.');
+        }
+
+        $items = $this->salesTransactionItemModel->getItemsByTransaction($id);
+
+        return view('sales/invoice', [
+            'transaction' => $transaction,
+            'items' => $items,
+        ]);
     }
 }
