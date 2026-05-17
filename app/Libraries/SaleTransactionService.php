@@ -3,6 +3,7 @@
 namespace App\Libraries;
 
 use App\Models\ProductModel;
+use App\Models\QuickTemplateModel;
 use App\Models\SaleLimitSettingModel;
 use App\Models\SalesTransactionItemModel;
 use App\Models\SalesTransactionModel;
@@ -17,6 +18,7 @@ class SaleTransactionService
     private SalesTransactionModel $salesTransactionModel;
     private SalesTransactionItemModel $salesTransactionItemModel;
     private SaleLimitSettingModel $saleLimitSettingModel;
+    private QuickTemplateModel $quickTemplateModel;
 
     public function __construct()
     {
@@ -25,11 +27,46 @@ class SaleTransactionService
         $this->salesTransactionModel = new SalesTransactionModel();
         $this->salesTransactionItemModel = new SalesTransactionItemModel();
         $this->saleLimitSettingModel = new SaleLimitSettingModel();
+        $this->quickTemplateModel = new QuickTemplateModel();
     }
 
     public function createTransaction(array $payload, int $createdBy): array
     {
         $transactionDate = $this->normalizeTransactionDate($payload['transaction_date'] ?? null);
+        $templateId = !empty($payload['template_id']) ? (int) $payload['template_id'] : null;
+        $source = (string) ($payload['source_transaksi'] ?? ($templateId !== null ? 'template' : 'manual'));
+        $customerName = trim((string) ($payload['customer_name'] ?? ''));
+
+        $template = null;
+        $discountPercent = 0.0;
+
+        if ($source === 'template' && $templateId !== null) {
+            $template = $this->quickTemplateModel->find($templateId);
+            if ($template === null) {
+                throw new RuntimeException('Template tidak ditemukan.');
+            }
+
+            if ($customerName === '') {
+                throw new RuntimeException('Nama pelanggan wajib diisi saat memakai template cepat.');
+            }
+
+            if ($this->salesTransactionModel->existsTemplateCustomer($templateId, $customerName)) {
+                throw new RuntimeException("Pelanggan '" . $customerName . "' sudah pernah memakai template ini. Setiap pelanggan hanya boleh 1x per template.");
+            }
+
+            // Override qty dari template (jangan percaya input client untuk mode template)
+            $payload['qty_5kg'] = (int) ($template['qty_5kg'] ?? 0);
+            $payload['qty_10kg'] = (int) ($template['qty_10kg'] ?? 0);
+            $payload['qty_25kg'] = (int) ($template['qty_25kg'] ?? 0);
+
+            $discountPercent = (float) ($template['discount_percent'] ?? 0);
+            if ($discountPercent < 0) {
+                $discountPercent = 0.0;
+            } elseif ($discountPercent > 100) {
+                $discountPercent = 100.0;
+            }
+        }
+
         $packageData = $this->preparePackageTransaction($payload);
         $items = $packageData['items'];
         $totals = $packageData['totals'];
@@ -39,6 +76,10 @@ class SaleTransactionService
             throw new RuntimeException('Transaksi melebihi batas maksimum ' . format_kg($setting['max_total_kg']) . '.');
         }
 
+        $gross = (float) $totals['grand_total'];
+        $discountAmount = round($gross * ($discountPercent / 100), 2);
+        $netTotal = round($gross - $discountAmount, 2);
+
         $invoiceNumber = $this->generateInvoiceNumber($transactionDate);
 
         $this->db->transStart();
@@ -47,8 +88,8 @@ class SaleTransactionService
             'invoice_number' => $invoiceNumber,
             'transaction_date' => $transactionDate,
             'created_by' => $createdBy,
-            'template_id' => !empty($payload['template_id']) ? (int) $payload['template_id'] : null,
-            'customer_name' => trim((string) ($payload['customer_name'] ?? '')) ?: null,
+            'template_id' => $templateId,
+            'customer_name' => $customerName !== '' ? $customerName : null,
             'qty_5kg' => $packageData['qty']['5'],
             'qty_10kg' => $packageData['qty']['10'],
             'qty_25kg' => $packageData['qty']['25'],
@@ -60,9 +101,11 @@ class SaleTransactionService
             'subtotal_25kg' => $packageData['subtotal']['25'],
             'total_items' => $totals['total_items'],
             'total_kg' => $totals['total_kg'],
-            'total_harga' => $totals['grand_total'],
-            'grand_total' => $totals['grand_total'],
-            'source_transaksi' => (string) ($payload['source_transaksi'] ?? (!empty($payload['template_id']) ? 'template' : 'manual')),
+            'total_harga' => $netTotal,
+            'grand_total' => $netTotal,
+            'discount_percent' => $discountPercent,
+            'discount_amount' => $discountAmount,
+            'source_transaksi' => $source,
             'notes' => trim((string) ($payload['notes'] ?? '')) ?: null,
         ], true);
 

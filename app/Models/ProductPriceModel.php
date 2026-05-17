@@ -55,6 +55,33 @@ class ProductPriceModel extends Model
             ->findAll();
     }
 
+    public function getBasePriceHistory(): array
+    {
+        $productModel = new ProductModel();
+        $packages = $productModel->getFixedPackagesWithCurrentPrice();
+
+        if (!isset($packages[25])) {
+            return [];
+        }
+
+        $baseProductId = (int) $packages[25]['id'];
+
+        $rows = $this->select('product_prices.id, product_prices.price, product_prices.price_change, product_prices.is_current, product_prices.created_at')
+            ->where('product_id', $baseProductId)
+            ->orderBy('product_prices.created_at', 'DESC')
+            ->orderBy('product_prices.id', 'DESC')
+            ->findAll();
+
+        $numbered = [];
+        $i = 1;
+        foreach ($rows as $row) {
+            $row['row_number'] = $i++;
+            $numbered[] = $row;
+        }
+
+        return $numbered;
+    }
+
     public function replaceCurrentPrice(int $productId, float $price, int $updatedBy): void
     {
         $previous = $this->getCurrentPrice($productId);
@@ -78,41 +105,39 @@ class ProductPriceModel extends Model
         ]);
     }
 
-    public function bulkAdjust(float $delta, int $updatedBy): array
+    public function setBasePrice(float $base, int $updatedBy): array
     {
-        if ($delta === 0.0) {
-            throw new RuntimeException('Nilai penyesuaian tidak boleh 0.');
+        if ($base <= 0) {
+            throw new RuntimeException('Harga pokok harus lebih besar dari 0.');
         }
 
         $productModel = new ProductModel();
         $packages = $productModel->getFixedPackagesWithCurrentPrice();
-        $updated = [];
 
         foreach ([5, 10, 25] as $weight) {
             if (!isset($packages[$weight])) {
                 throw new RuntimeException('Data produk beras ' . $weight . ' kg belum tersedia.');
             }
+        }
 
-            $current = $packages[$weight]['current_price'];
-            if ($current === null) {
-                throw new RuntimeException('Harga aktif untuk beras ' . $weight . ' kg belum diatur. Atur harga awal terlebih dahulu.');
-            }
+        $derived = derive_package_prices($base);
+        $result = [];
 
-            $newPrice = (float) $current + $delta;
-            if ($newPrice <= 0) {
-                throw new RuntimeException('Penyesuaian membuat harga beras ' . $weight . ' kg menjadi nol atau negatif.');
-            }
+        foreach ([5, 10, 25] as $weight) {
+            $productId = (int) $packages[$weight]['id'];
+            $newPrice = (float) $derived[$weight];
+            $previous = (float) ($packages[$weight]['current_price'] ?? 0);
 
-            $this->replaceCurrentPrice((int) $packages[$weight]['id'], $newPrice, $updatedBy);
+            $this->replaceCurrentPrice($productId, $newPrice, $updatedBy);
 
-            $updated[$weight] = [
-                'product_id' => (int) $packages[$weight]['id'],
-                'previous_price' => (float) $current,
+            $result[$weight] = [
+                'product_id' => $productId,
+                'previous_price' => $previous,
                 'new_price' => $newPrice,
-                'delta' => $delta,
+                'delta' => $newPrice - $previous,
             ];
         }
 
-        return $updated;
+        return $result;
     }
 }

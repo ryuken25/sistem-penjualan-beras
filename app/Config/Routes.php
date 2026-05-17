@@ -43,8 +43,7 @@ $routes->group('admin', ['filter' => 'role:admin'], static function (RouteCollec
     $routes->post('products/delete/(:num)', 'ProductsController::delete/$1');
 
     $routes->get('prices', 'PricesController::index');
-    $routes->post('prices/update/(:num)', 'PricesController::update/$1');
-    $routes->post('prices/bulk-adjust', 'PricesController::bulkAdjust');
+    $routes->post('prices/set-base', 'PricesController::setBasePrice');
 
     $routes->get('templates', 'QuickTemplatesController::index');
     $routes->get('templates/create', 'QuickTemplatesController::create');

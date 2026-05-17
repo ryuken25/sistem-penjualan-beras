@@ -41,6 +41,7 @@ class QuickTemplatesController extends BaseController
             'items' => old('items') ?? $this->buildItemsFromTemplateQty(null, $products),
             'products' => array_values($products),
             'formAction' => '/admin/templates/store',
+            'nextCode' => $this->templateModel->getNextTemplateCode(),
         ]);
     }
 
@@ -50,10 +51,6 @@ class QuickTemplatesController extends BaseController
         $normalized = $this->normalizeTemplatePayload($post);
         $errors = $this->validateTemplate($normalized);
 
-        if ($this->templateModel->codeExists(trim((string) ($normalized['template_code'] ?? '')))) {
-            $errors['template_code'] = 'Kode template sudah digunakan.';
-        }
-
         if ($errors !== []) {
             return redirect()->back()->withInput()->with('errors', $errors);
         }
@@ -61,12 +58,15 @@ class QuickTemplatesController extends BaseController
         $db = db_connect();
         $db->transStart();
 
+        $templateCode = $this->templateModel->getNextTemplateCode();
+
         $templateId = $this->templateModel->insert([
-            'template_code' => trim((string) $normalized['template_code']),
+            'template_code' => $templateCode,
             'template_name' => trim((string) $normalized['template_name']),
             'qty_5kg' => (int) $normalized['qty_5kg'],
             'qty_10kg' => (int) $normalized['qty_10kg'],
             'qty_25kg' => (int) $normalized['qty_25kg'],
+            'discount_percent' => (float) $normalized['discount_percent'],
             'is_active' => (int) ($normalized['is_active'] ?? 0),
             'created_by' => (int) current_user_id(),
         ], true);
@@ -82,7 +82,8 @@ class QuickTemplatesController extends BaseController
             return redirect()->back()->withInput()->with('error', 'Gagal menyimpan template transaksi.');
         }
 
-        return redirect()->to('/admin/templates')->with('success', 'Template transaksi berhasil ditambahkan.');
+        return redirect()->to('/admin/templates')
+            ->with('success', 'Template transaksi berhasil ditambahkan dengan kode ' . $templateCode . '.');
     }
 
     public function edit(int $id)
@@ -101,6 +102,7 @@ class QuickTemplatesController extends BaseController
             'items' => old('items') ?? $this->buildItemsFromTemplateQty($template, $products),
             'products' => array_values($products),
             'formAction' => '/admin/templates/update/' . $id,
+            'nextCode' => (string) $template['template_code'],
         ]);
     }
 
@@ -116,10 +118,6 @@ class QuickTemplatesController extends BaseController
         $normalized = $this->normalizeTemplatePayload($post);
         $errors = $this->validateTemplate($normalized);
 
-        if ($this->templateModel->codeExists(trim((string) ($normalized['template_code'] ?? '')), $id)) {
-            $errors['template_code'] = 'Kode template sudah digunakan.';
-        }
-
         if ($errors !== []) {
             return redirect()->back()->withInput()->with('errors', $errors);
         }
@@ -128,11 +126,11 @@ class QuickTemplatesController extends BaseController
         $db->transStart();
 
         $this->templateModel->update($id, [
-            'template_code' => trim((string) $normalized['template_code']),
             'template_name' => trim((string) $normalized['template_name']),
             'qty_5kg' => (int) $normalized['qty_5kg'],
             'qty_10kg' => (int) $normalized['qty_10kg'],
             'qty_25kg' => (int) $normalized['qty_25kg'],
+            'discount_percent' => (float) $normalized['discount_percent'],
             'is_active' => (int) ($normalized['is_active'] ?? 0),
         ]);
 
@@ -168,11 +166,11 @@ class QuickTemplatesController extends BaseController
     private function validateTemplate(array $post): array
     {
         $rules = [
-            'template_code' => 'required|max_length[50]|alpha_numeric_punct',
             'template_name' => 'required|max_length[150]',
             'qty_5kg' => 'required|integer|greater_than_equal_to[0]',
             'qty_10kg' => 'required|integer|greater_than_equal_to[0]',
             'qty_25kg' => 'required|integer|greater_than_equal_to[0]',
+            'discount_percent' => 'permit_empty|decimal|greater_than_equal_to[0]|less_than_equal_to[100]',
             'is_active' => 'permit_empty|in_list[0,1]',
         ];
 
@@ -190,11 +188,11 @@ class QuickTemplatesController extends BaseController
     private function normalizeTemplatePayload(array $post): array
     {
         $normalized = [
-            'template_code' => trim((string) ($post['template_code'] ?? '')),
             'template_name' => trim((string) ($post['template_name'] ?? '')),
             'qty_5kg' => (string) ($post['qty_5kg'] ?? '0'),
             'qty_10kg' => (string) ($post['qty_10kg'] ?? '0'),
             'qty_25kg' => (string) ($post['qty_25kg'] ?? '0'),
+            'discount_percent' => trim((string) ($post['discount_percent'] ?? '0')) === '' ? '0' : (string) $post['discount_percent'],
             'is_active' => (string) ($post['is_active'] ?? '1'),
         ];
 

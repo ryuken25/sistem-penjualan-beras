@@ -17,6 +17,7 @@ class QuickTemplateModel extends Model
         'qty_5kg',
         'qty_10kg',
         'qty_25kg',
+        'discount_percent',
         'is_active',
         'created_by',
     ];
@@ -46,5 +47,23 @@ class QuickTemplateModel extends Model
         }
 
         return $builder->countAllResults() > 0;
+    }
+
+    public function getNextTemplateCode(): string
+    {
+        $row = $this->builder()
+            ->select("MAX(CAST(SUBSTRING(template_code, 5) AS UNSIGNED)) AS max_num", false)
+            ->like('template_code', 'TPL-', 'after')
+            ->get()
+            ->getRowArray();
+
+        $next = ((int) ($row['max_num'] ?? 0)) + 1;
+
+        do {
+            $candidate = 'TPL-' . str_pad((string) $next, 3, '0', STR_PAD_LEFT);
+            $next++;
+        } while ($this->codeExists($candidate));
+
+        return $candidate;
     }
 }

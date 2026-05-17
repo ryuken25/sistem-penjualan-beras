@@ -10,12 +10,13 @@
 USE sistem_penjualan_beras;
 
 -- ------------------------------------------------------------
--- quick_templates : kolom kuantitas tetap + soft delete
+-- quick_templates : kolom kuantitas tetap + diskon + soft delete
 -- ------------------------------------------------------------
 ALTER TABLE quick_templates
     ADD COLUMN IF NOT EXISTS qty_5kg  INT NOT NULL DEFAULT 0 AFTER template_name,
     ADD COLUMN IF NOT EXISTS qty_10kg INT NOT NULL DEFAULT 0 AFTER qty_5kg,
     ADD COLUMN IF NOT EXISTS qty_25kg INT NOT NULL DEFAULT 0 AFTER qty_10kg,
+    ADD COLUMN IF NOT EXISTS discount_percent DECIMAL(5,2) NOT NULL DEFAULT 0.00 AFTER qty_25kg,
     ADD COLUMN IF NOT EXISTS deleted_at DATETIME NULL AFTER updated_at;
 
 -- ------------------------------------------------------------
@@ -33,7 +34,9 @@ ALTER TABLE sales_transactions
     ADD COLUMN IF NOT EXISTS subtotal_10kg DECIMAL(15,2) NOT NULL DEFAULT 0 AFTER subtotal_5kg,
     ADD COLUMN IF NOT EXISTS subtotal_25kg DECIMAL(15,2) NOT NULL DEFAULT 0 AFTER subtotal_10kg,
     ADD COLUMN IF NOT EXISTS total_harga   DECIMAL(15,2) NOT NULL DEFAULT 0 AFTER grand_total,
-    ADD COLUMN IF NOT EXISTS source_transaksi ENUM('manual','template') NOT NULL DEFAULT 'manual' AFTER total_harga;
+    ADD COLUMN IF NOT EXISTS discount_percent DECIMAL(5,2) NOT NULL DEFAULT 0.00 AFTER total_harga,
+    ADD COLUMN IF NOT EXISTS discount_amount  DECIMAL(15,2) NOT NULL DEFAULT 0.00 AFTER discount_percent,
+    ADD COLUMN IF NOT EXISTS source_transaksi ENUM('manual','template') NOT NULL DEFAULT 'manual' AFTER discount_amount;
 
 -- ------------------------------------------------------------
 -- product_prices : kolom delta perubahan harga

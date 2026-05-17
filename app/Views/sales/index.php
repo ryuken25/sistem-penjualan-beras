@@ -31,18 +31,20 @@
                             <th>Detail Item</th>
                             <th>Total KG</th>
                             <th>Total Harga</th>
+                            <th class="text-center" style="width: 110px;">Invoice</th>
                         <?php else: ?>
                             <th>Jam</th>
                             <th>Nama Pelanggan</th>
                             <th>Ringkasan Item</th>
                             <th>Total Harga</th>
+                            <th class="text-center" style="width: 110px;">Invoice</th>
                         <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if ($transactions === []): ?>
                         <tr>
-                            <td colspan="<?= $isAdmin ? '7' : '4' ?>" class="text-center text-muted py-4">Belum ada
+                            <td colspan="<?= $isAdmin ? '8' : '5' ?>" class="text-center text-muted py-4">Belum ada
                                 transaksi penjualan.</td>
                         </tr>
                     <?php else: ?>
@@ -86,6 +88,14 @@
                                     <td>
                                         <?= format_rupiah($transaction['grand_total']) ?>
                                     </td>
+                                    <td class="text-center">
+                                        <a href="<?= site_url('/sales/invoice/' . $transaction['id']) ?>"
+                                            target="_blank" rel="noopener"
+                                            class="btn btn-sm btn-outline-primary"
+                                            title="Buka invoice di tab baru">
+                                            <i class="bi bi-receipt"></i> Invoice
+                                        </a>
+                                    </td>
                                 <?php else: ?>
                                     <?php
                                     $ringkasan = [];
@@ -110,6 +120,14 @@
                                     </td>
                                     <td>
                                         <?= format_rupiah($transaction['total_harga'] ?? $transaction['grand_total']) ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="<?= site_url('/sales/invoice/' . $transaction['id']) ?>"
+                                            target="_blank" rel="noopener"
+                                            class="btn btn-sm btn-outline-primary"
+                                            title="Buka invoice di tab baru">
+                                            <i class="bi bi-receipt"></i> Invoice
+                                        </a>
                                     </td>
                                 <?php endif; ?>
                             </tr>

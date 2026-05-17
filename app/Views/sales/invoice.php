@@ -11,10 +11,18 @@ $customerDisplay = $customerName !== '' ? $customerName : 'Pelanggan Umum';
 
 $totalSak = 0;
 $totalKg = 0.0;
+$itemsSubtotal = 0.0;
 foreach ($items as $item) {
     $totalSak += (int) $item['quantity'];
     $totalKg += (float) $item['total_kg_item'];
+    $itemsSubtotal += (float) $item['subtotal'];
 }
+
+$discountPercent = (float) ($transaction['discount_percent'] ?? 0);
+$discountAmount = (float) ($transaction['discount_amount'] ?? 0);
+$hasDiscount = $discountPercent > 0 && $discountAmount > 0;
+$grandTotal = (float) ($transaction['grand_total'] ?? 0);
+$grossTotal = $hasDiscount ? ($grandTotal + $discountAmount) : ($itemsSubtotal > 0 ? $itemsSubtotal : $grandTotal);
 ?><!doctype html>
 <html lang="id">
 <head>
@@ -65,7 +73,6 @@ foreach ($items as $item) {
                 </div>
                 <div class="text-end">
                     <div class="shop-name h5 mb-1">UD TULUS SARI MERTA</div>
-                    <div class="small text-muted">Sistem Informasi Penjualan Beras</div>
                 </div>
             </div>
 
@@ -123,9 +130,20 @@ foreach ($items as $item) {
                 <div class="small text-muted">
                     <?= esc((string) $totalSak) ?> sak &middot; <?= format_kg($totalKg) ?>
                 </div>
-                <div class="text-end">
+                <div class="text-end" style="min-width: 220px;">
+                    <?php if ($hasDiscount): ?>
+                        <div class="d-flex justify-content-between gap-3">
+                            <span class="text-muted">Subtotal Kotor</span>
+                            <span><?= format_rupiah($grossTotal) ?></span>
+                        </div>
+                        <div class="d-flex justify-content-between gap-3 text-danger">
+                            <span>Diskon (<?= esc(rtrim(rtrim(number_format($discountPercent, 2, ',', '.'), '0'), ',')) ?>%)</span>
+                            <span>-<?= format_rupiah($discountAmount) ?></span>
+                        </div>
+                        <hr class="my-1">
+                    <?php endif; ?>
                     <div class="meta-label">Total Pembayaran</div>
-                    <div class="total-line text-primary"><?= format_rupiah($transaction['grand_total']) ?></div>
+                    <div class="total-line text-primary"><?= format_rupiah($grandTotal) ?></div>
                 </div>
             </div>
 

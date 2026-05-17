@@ -58,9 +58,16 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
                             <div class="small-muted mt-1">Tanggal dan jam transaksi diisi otomatis oleh sistem.</div>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Nama Pelanggan (Opsional)</label>
-                            <input type="text" name="customer_name" class="form-control"
-                                value="<?= esc(old('customer_name', '')) ?>" placeholder="Kosongkan jika pembeli umum">
+                            <?php if ($isTemplateMode): ?>
+                                <label class="form-label">Nama Pelanggan <span class="text-danger">*</span></label>
+                                <input type="text" name="customer_name" class="form-control"
+                                    value="<?= esc(old('customer_name', '')) ?>" placeholder="Nama pelanggan wajib diisi" required>
+                                <div class="small-muted mt-1">Wajib diisi. Satu pelanggan hanya bisa 1x per template.</div>
+                            <?php else: ?>
+                                <label class="form-label">Nama Pelanggan (Opsional)</label>
+                                <input type="text" name="customer_name" class="form-control"
+                                    value="<?= esc(old('customer_name', '')) ?>" placeholder="Kosongkan jika pembeli umum">
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -83,6 +90,7 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
                                         $templateQty5 = (int) ($template['qty_5kg'] ?? 0);
                                         $templateQty10 = (int) ($template['qty_10kg'] ?? 0);
                                         $templateQty25 = (int) ($template['qty_25kg'] ?? 0);
+                                        $templateDiscount = (float) ($template['discount_percent'] ?? 0);
                                         ?>
                                         <div class="col-md-6">
                                             <button type="button"
@@ -91,8 +99,14 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
                                                 data-template-name="<?= esc($template['template_name']) ?>"
                                                 data-qty-5="<?= esc((string) $templateQty5) ?>"
                                                 data-qty-10="<?= esc((string) $templateQty10) ?>"
-                                                data-qty-25="<?= esc((string) $templateQty25) ?>">
-                                                <div class="fw-semibold mb-1"><?= esc($template['template_name']) ?></div>
+                                                data-qty-25="<?= esc((string) $templateQty25) ?>"
+                                                data-discount="<?= esc((string) $templateDiscount) ?>">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div class="fw-semibold mb-1"><?= esc($template['template_name']) ?></div>
+                                                    <?php if ($templateDiscount > 0): ?>
+                                                        <span class="badge text-bg-warning">Diskon <?= esc(rtrim(rtrim(number_format($templateDiscount, 2, ',', '.'), '0'), ',')) ?>%</span>
+                                                    <?php endif; ?>
+                                                </div>
                                                 <div class="small-muted mb-2"><?= esc($template['template_code']) ?></div>
                                                 <div class="small text-muted">
                                                     5kg x <?= esc((string) $templateQty5) ?>,
@@ -288,6 +302,17 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
                     </table>
                 </div>
 
+                <div id="confirmDiscountBox" class="d-none mb-3 p-3 rounded-3 bg-warning-subtle">
+                    <div class="d-flex justify-content-between">
+                        <span>Subtotal Kotor</span>
+                        <strong id="confirmGrossTotal">Rp 0</strong>
+                    </div>
+                    <div class="d-flex justify-content-between text-danger">
+                        <span>Diskon Template (<span id="confirmDiscountPercent">0</span>%)</span>
+                        <strong id="confirmDiscountAmount">-Rp 0</strong>
+                    </div>
+                </div>
+
                 <div class="row g-3">
                     <div class="col-md-4">
                         <div class="card border-0 bg-light h-100">
@@ -339,8 +364,11 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
             'qty_5kg' => (int) ($template['qty_5kg'] ?? 0),
             'qty_10kg' => (int) ($template['qty_10kg'] ?? 0),
             'qty_25kg' => (int) ($template['qty_25kg'] ?? 0),
+            'discount_percent' => (float) ($template['discount_percent'] ?? 0),
         ];
     }, $templates), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>;
+
+    let activeDiscountPercent = 0;
 
     const qtyInputs = {
         5: document.getElementById('qty_5kg'),
@@ -392,13 +420,21 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
         const subtotal10 = (Number.isNaN(qty10) ? 0 : qty10) * 10 * packagePrices[10];
         const subtotal25 = (Number.isNaN(qty25) ? 0 : qty25) * 25 * packagePrices[25];
 
+        const gross = subtotal5 + subtotal10 + subtotal25;
+        const discountPercent = isTemplateMode ? activeDiscountPercent : 0;
+        const discountAmount = Math.round(gross * (discountPercent / 100));
+        const grandTotal = gross - discountAmount;
+
         return {
             invalidField,
             qty: { 5: Number.isNaN(qty5) ? 0 : qty5, 10: Number.isNaN(qty10) ? 0 : qty10, 25: Number.isNaN(qty25) ? 0 : qty25 },
             subtotal: { 5: subtotal5, 10: subtotal10, 25: subtotal25 },
             totalItems: (Number.isNaN(qty5) ? 0 : qty5) + (Number.isNaN(qty10) ? 0 : qty10) + (Number.isNaN(qty25) ? 0 : qty25),
             totalKg: ((Number.isNaN(qty5) ? 0 : qty5) * 5) + ((Number.isNaN(qty10) ? 0 : qty10) * 10) + ((Number.isNaN(qty25) ? 0 : qty25) * 25),
-            grandTotal: subtotal5 + subtotal10 + subtotal25,
+            gross,
+            discountPercent,
+            discountAmount,
+            grandTotal,
         };
     }
 
@@ -444,6 +480,11 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
             return null;
         }
 
+        if (isTemplateMode && customerNameInput.value.trim() === '') {
+            showError('Nama pelanggan wajib diisi saat memakai template cepat.');
+            return null;
+        }
+
         const limitEnabled = <?= !empty($saleLimit['is_enabled']) ? 'true' : 'false' ?>;
         const maxTotalKg = <?= (float) ($saleLimit['max_total_kg'] ?? 0) ?>;
         if (limitEnabled && state.totalKg > maxTotalKg) {
@@ -461,6 +502,16 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
         document.getElementById('confirmTotalItems').textContent = state.totalItems;
         document.getElementById('confirmTotalKg').textContent = formatKg(state.totalKg);
         document.getElementById('confirmGrandTotal').textContent = formatCurrency(state.grandTotal);
+
+        const discountBox = document.getElementById('confirmDiscountBox');
+        if (state.discountPercent > 0 && state.discountAmount > 0) {
+            document.getElementById('confirmGrossTotal').textContent = formatCurrency(state.gross);
+            document.getElementById('confirmDiscountPercent').textContent = String(state.discountPercent);
+            document.getElementById('confirmDiscountAmount').textContent = '-' + formatCurrency(state.discountAmount);
+            discountBox.classList.remove('d-none');
+        } else {
+            discountBox.classList.add('d-none');
+        }
 
         const tbody = document.getElementById('confirmItemsBody');
         tbody.innerHTML = '';
@@ -491,6 +542,15 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
         qtyInputs[5].value = selected.qty_5kg;
         qtyInputs[10].value = selected.qty_10kg;
         qtyInputs[25].value = selected.qty_25kg;
+        activeDiscountPercent = Number(selected.discount_percent || 0);
+
+        if (isTemplateMode) {
+            [5, 10, 25].forEach((weight) => {
+                qtyInputs[weight].setAttribute('readonly', 'readonly');
+                qtyInputs[weight].classList.add('bg-light');
+                qtyInputs[weight].setAttribute('tabindex', '-1');
+            });
+        }
 
         document.querySelectorAll('.template-select-btn').forEach((button) => {
             const active = button.dataset.templateId === String(templateId);
@@ -533,6 +593,15 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
             confirmedInput.value = '0';
         }
     });
+
+    if (isTemplateMode) {
+        // Kunci qty inputs sampai template dipilih
+        [5, 10, 25].forEach((weight) => {
+            qtyInputs[weight].setAttribute('readonly', 'readonly');
+            qtyInputs[weight].classList.add('bg-light');
+            qtyInputs[weight].setAttribute('tabindex', '-1');
+        });
+    }
 
     renderSummary();
     if (isTemplateMode && templateIdInput.value) {

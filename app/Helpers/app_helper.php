@@ -1,5 +1,29 @@
 <?php
 
+if (!defined('PRICE_STEP_PER_KG')) {
+    /**
+     * Selisih harga per kg antar kemasan (5 vs 10 vs 25 kg).
+     * Base price = harga per kg untuk Beras 25 kg.
+     *   harga_25kg = base
+     *   harga_10kg = base + PRICE_STEP_PER_KG
+     *   harga_5kg  = base + (PRICE_STEP_PER_KG * 2)
+     */
+    define('PRICE_STEP_PER_KG', 100);
+}
+
+if (!function_exists('derive_package_prices')) {
+    function derive_package_prices(float $base): array
+    {
+        $step = (float) PRICE_STEP_PER_KG;
+
+        return [
+            5  => $base + ($step * 2),
+            10 => $base + $step,
+            25 => $base,
+        ];
+    }
+}
+
 if (!function_exists('current_user')) {
     function current_user(): ?array
     {

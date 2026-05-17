@@ -30,9 +30,24 @@ class SalesTransactionModel extends Model
         'total_kg',
         'total_harga',
         'grand_total',
+        'discount_percent',
+        'discount_amount',
         'source_transaksi',
         'notes',
     ];
+
+    public function existsTemplateCustomer(int $templateId, string $customerName): bool
+    {
+        $normalized = strtolower(trim($customerName));
+        if ($normalized === '') {
+            return false;
+        }
+
+        return $this->builder()
+            ->where('template_id', $templateId)
+            ->where('LOWER(TRIM(customer_name))', $normalized)
+            ->countAllResults() > 0;
+    }
 
     public function getLatestInvoiceForDate(string $datePart): ?array
     {

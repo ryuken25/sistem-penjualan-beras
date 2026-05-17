@@ -18,8 +18,11 @@
         </div>
     <?php else: ?>
         <?php foreach ($templates as $template): ?>
-            <?php $templateRows = $templateItems[$template['id']] ?? []; ?>
-            <?php $estimatedTotal = 0; ?>
+            <?php
+            $templateRows = $templateItems[$template['id']] ?? [];
+            $estimatedGross = 0.0;
+            $discountPercent = (float) ($template['discount_percent'] ?? 0);
+            ?>
             <div class="col-xl-6">
                 <div class="card card-soft h-100">
                     <div class="card-body">
@@ -33,7 +36,12 @@
                                     <?= esc($template['created_by_name'] ?? '-') ?>
                                 </div>
                             </div>
-                            <?= status_badge($template['is_active']) ?>
+                            <div class="d-flex flex-column align-items-end gap-1">
+                                <?= status_badge($template['is_active']) ?>
+                                <?php if ($discountPercent > 0): ?>
+                                    <span class="badge text-bg-warning">Diskon <?= esc(rtrim(rtrim(number_format($discountPercent, 2, ',', '.'), '0'), ',')) ?>%</span>
+                                <?php endif; ?>
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -43,14 +51,19 @@
                                     <li class="text-muted">Belum ada item.</li>
                                 <?php else: ?>
                                     <?php foreach ($templateRows as $row): ?>
-                                        <?php $estimatedTotal += ((float) ($row['current_price'] ?? 0)) * ((int) $row['quantity']); ?>
+                                        <?php
+                                        $itemWeight = (float) ($row['weight_kg'] ?? 0);
+                                        $itemPrice = (float) ($row['current_price'] ?? 0);
+                                        $itemQty = (int) $row['quantity'];
+                                        $estimatedGross += $itemWeight * $itemQty * $itemPrice;
+                                        ?>
                                         <li>
                                             <span class="fw-semibold">
                                                 <?= esc($row['product_name'] ?? '-') ?>
                                             </span>
                                             <span class="small-muted">• Jumlah
-                                                <?= esc((string) $row['quantity']) ?> •
-                                                <?= format_kg($row['weight_kg'] ?? 0) ?>
+                                                <?= esc((string) $row['quantity']) ?> sak •
+                                                <?= format_kg($row['weight_kg'] ?? 0) ?>/sak
                                             </span>
                                         </li>
                                     <?php endforeach; ?>
@@ -58,9 +71,18 @@
                             </ul>
                         </div>
 
-                        <div class="small-muted mb-3">Estimasi total dihitung dinamis dari harga aktif saat ini: <strong>
-                                <?= format_rupiah($estimatedTotal) ?>
-                            </strong></div>
+                        <?php $estimatedNet = $estimatedGross * (1 - ($discountPercent / 100)); ?>
+                        <div class="small-muted mb-1">
+                            Estimasi total (harga aktif × diskon template):
+                            <strong class="text-primary"><?= format_rupiah($estimatedNet) ?></strong>
+                        </div>
+                        <?php if ($discountPercent > 0): ?>
+                            <div class="small text-muted mb-3">
+                                Sebelum diskon: <?= format_rupiah($estimatedGross) ?>
+                            </div>
+                        <?php else: ?>
+                            <div class="mb-3"></div>
+                        <?php endif; ?>
 
                         <div class="d-flex justify-content-end gap-2">
                             <a href="<?= site_url('/admin/templates/edit/' . $template['id']) ?>"
