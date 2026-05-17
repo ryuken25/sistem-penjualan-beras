@@ -21,12 +21,12 @@ class SaleLimitSettingModel extends Model
         return $this->orderBy('id', 'DESC')->first();
     }
 
-    public function saveSetting(bool $isEnabled, float $maxTotalKg, ?int $updatedBy): void
+    public function saveSetting(bool $isEnabled, int|float $maxTotalKg, ?int $updatedBy): void
     {
         $current = $this->getCurrentSetting();
         $payload = [
             'is_enabled' => $isEnabled ? 1 : 0,
-            'max_total_kg' => $maxTotalKg,
+            'max_total_kg' => (int) $maxTotalKg,
             'updated_by' => $updatedBy,
         ];
 

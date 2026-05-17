@@ -47,8 +47,9 @@ $derived = derive_package_prices($basePrice);
                 </div>
             </div>
 
-            <div class="d-flex justify-content-end mt-3">
-                <button type="submit" class="btn btn-primary">
+            <div class="d-flex justify-content-end align-items-center gap-3 mt-3">
+                <span class="small text-muted d-none" id="basePriceHint">Nilai harus berbeda dari harga saat ini.</span>
+                <button type="submit" class="btn btn-primary" id="basePriceSubmit" disabled>
                     <i class="bi bi-save me-1"></i>Simpan Harga Pokok
                 </button>
             </div>
@@ -67,7 +68,8 @@ $derived = derive_package_prices($basePrice);
             <?php foreach ([5, 10, 25] as $weight): ?>
                 <?php
                 $product = $packages[$weight] ?? null;
-                $price = $product !== null ? (float) ($product['current_price'] ?? 0) : 0.0;
+                $pricePerKg = $product !== null ? (float) ($product['current_price'] ?? 0) : 0.0;
+                $totalPerSak = $pricePerKg * $weight;
                 ?>
                 <div class="col-xl-4 col-md-6">
                     <div class="border rounded-4 p-3 h-100 bg-light-subtle">
@@ -82,10 +84,15 @@ $derived = derive_package_prices($basePrice);
                                 <?= status_badge($product['is_active']) ?>
                             <?php endif; ?>
                         </div>
-                        <div class="small-muted mt-2">Harga Aktif (per kg)</div>
+                        <div class="small-muted mt-2">Total per sak</div>
                         <div class="summary-number">
-                            <?= $price > 0 ? format_rupiah($price) : 'Belum diatur' ?>
+                            <?= $pricePerKg > 0 ? format_rupiah($totalPerSak) : 'Belum diatur' ?>
                         </div>
+                        <?php if ($pricePerKg > 0): ?>
+                            <div class="small text-muted">
+                                Rincian: <?= format_rupiah($pricePerKg) ?>/kg × <?= esc((string) $weight) ?> kg
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -156,7 +163,10 @@ $derived = derive_package_prices($basePrice);
         }
 
         const step = <?= (float) PRICE_STEP_PER_KG ?>;
+        const currentBase = <?= json_encode((float) $basePrice) ?>;
         const previews = document.querySelectorAll('.base-preview');
+        const submitBtn = document.getElementById('basePriceSubmit');
+        const hint = document.getElementById('basePriceHint');
         const formatter = new Intl.NumberFormat('id-ID', {
             style: 'currency',
             currency: 'IDR',
@@ -182,6 +192,12 @@ $derived = derive_package_prices($basePrice);
                 }
                 node.textContent = formatter.format(value);
             });
+
+            const isValid = Number.isFinite(base) && base > 0 && base !== currentBase;
+            submitBtn.disabled = !isValid;
+            if (hint) {
+                hint.classList.toggle('d-none', isValid);
+            }
         }
 
         input.addEventListener('input', update);

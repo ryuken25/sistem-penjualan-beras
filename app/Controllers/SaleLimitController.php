@@ -25,7 +25,7 @@ class SaleLimitController extends BaseController
     {
         $post = $this->request->getPost();
         $rules = [
-            'max_total_kg' => 'required|decimal|greater_than_equal_to[0]',
+            'max_total_kg' => 'permit_empty|is_natural',
         ];
 
         if (!$this->validateData($post, $rules)) {
@@ -33,7 +33,7 @@ class SaleLimitController extends BaseController
         }
 
         $isEnabled = $this->request->getPost('is_enabled') !== null;
-        $maxTotal = (float) $post['max_total_kg'];
+        $maxTotal = (int) ($post['max_total_kg'] ?? 0);
 
         if ($isEnabled && $maxTotal <= 0) {
             return redirect()->back()->withInput()->with('error', 'Batas kilogram harus lebih dari 0 saat mode limit aktif.');

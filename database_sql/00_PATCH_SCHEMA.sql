@@ -49,3 +49,10 @@ ALTER TABLE product_prices
 -- ------------------------------------------------------------
 ALTER TABLE users
     ADD COLUMN IF NOT EXISTS profile_photo VARCHAR(255) NULL AFTER is_active;
+
+-- ------------------------------------------------------------
+-- sale_limit_settings : max_total_kg dari DECIMAL ke INT UNSIGNED
+-- (MODIFY COLUMN bersifat in-place; aman dijalankan ulang.)
+-- ------------------------------------------------------------
+ALTER TABLE sale_limit_settings
+    MODIFY COLUMN max_total_kg INT UNSIGNED NOT NULL DEFAULT 0;

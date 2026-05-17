@@ -26,6 +26,9 @@
                         <div class="small-muted">Sistem Informasi Penjualan Beras UD Tulus Sari Merta</div>
                     </div>
                     <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                        <a href="<?= site_url('/dashboard') ?>" class="btn btn-sm btn-outline-primary me-2">
+                            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                        </a>
                         <div class="text-end d-none d-sm-block">
                             <div class="fw-semibold">
                                 <?= esc((string) session('full_name')) ?>
@@ -56,6 +59,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="<?= base_url('assets/js/number-input.js') ?>"></script>
     <?= $this->renderSection('scripts') ?>
 </body>
 

@@ -47,6 +47,9 @@
     <?php else: ?>
         <div class="small text-uppercase text-white-50 mb-2">Menu Pegawai</div>
         <nav class="nav flex-column mb-4">
+            <a class="nav-link <?= active_menu('dashboard', true) ?>" href="<?= site_url('/dashboard') ?>">
+                <i class="bi bi-speedometer2 me-2"></i> Dashboard
+            </a>
             <a class="nav-link <?= active_menu('sales/create', true) ?>" href="<?= site_url('/sales/create') ?>">
                 <i class="bi bi-receipt me-2"></i> Penjualan
             </a>

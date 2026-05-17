@@ -58,15 +58,11 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
                             <div class="small-muted mt-1">Tanggal dan jam transaksi diisi otomatis oleh sistem.</div>
                         </div>
                         <div class="col-md-6">
+                            <label class="form-label">Nama Pelanggan (Opsional)</label>
+                            <input type="text" name="customer_name" class="form-control"
+                                value="<?= esc(old('customer_name', '')) ?>" placeholder="Kosongkan jika pembeli umum">
                             <?php if ($isTemplateMode): ?>
-                                <label class="form-label">Nama Pelanggan <span class="text-danger">*</span></label>
-                                <input type="text" name="customer_name" class="form-control"
-                                    value="<?= esc(old('customer_name', '')) ?>" placeholder="Nama pelanggan wajib diisi" required>
-                                <div class="small-muted mt-1">Wajib diisi. Satu pelanggan hanya bisa 1x per template.</div>
-                            <?php else: ?>
-                                <label class="form-label">Nama Pelanggan (Opsional)</label>
-                                <input type="text" name="customer_name" class="form-control"
-                                    value="<?= esc(old('customer_name', '')) ?>" placeholder="Kosongkan jika pembeli umum">
+                                <div class="small-muted mt-1">Jika diisi, satu pelanggan hanya bisa 1× per template.</div>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -477,11 +473,6 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
 
         if (isTemplateMode && !templateIdInput.value) {
             showError('Silakan pilih salah satu template cepat terlebih dahulu.');
-            return null;
-        }
-
-        if (isTemplateMode && customerNameInput.value.trim() === '') {
-            showError('Nama pelanggan wajib diisi saat memakai template cepat.');
             return null;
         }
 

@@ -25,8 +25,9 @@
 
                     <div class="mb-3">
                         <label class="form-label">Batas Maksimum Total KG per Transaksi</label>
-                        <input type="number" step="0.01" min="0" name="max_total_kg" class="form-control"
-                            value="<?= esc(old('max_total_kg', $setting['max_total_kg'] ?? '0')) ?>" required>
+                        <input type="number" step="1" min="0" name="max_total_kg" class="form-control"
+                            value="<?= esc((string) (int) old('max_total_kg', $setting['max_total_kg'] ?? 0)) ?>">
+                        <div class="form-text">Hanya menerima bilangan bulat (kg). Contoh: 100.</div>
                     </div>
 
                     <div class="small-muted mb-4">Saat aktif, transaksi yang melebihi batas ini akan ditolak saat

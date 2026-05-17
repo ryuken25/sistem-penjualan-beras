@@ -44,7 +44,7 @@ CREATE TABLE quick_templates (
 CREATE TABLE sale_limit_settings (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     is_enabled TINYINT(1) NOT NULL DEFAULT 0,
-    max_total_kg DECIMAL(12,2) NOT NULL DEFAULT 0.00,
+    max_total_kg INT UNSIGNED NOT NULL DEFAULT 0,
     updated_by INT UNSIGNED NULL,
     created_at DATETIME NULL,
     updated_at DATETIME NULL,
@@ -144,7 +144,7 @@ INSERT INTO quick_template_items (template_id, product_id, quantity) VALUES
 (2, 3, 1);
 
 INSERT INTO sale_limit_settings (id, is_enabled, max_total_kg, updated_by, created_at, updated_at) VALUES
-(1, 0, 100.00, 1, NOW(), NOW());
+(1, 0, 100, 1, NOW(), NOW());
 
 INSERT INTO sales_transactions (id, invoice_number, transaction_date, created_by, template_id, customer_name, qty_5kg, qty_10kg, qty_25kg, price_5kg, price_10kg, price_25kg, subtotal_5kg, subtotal_10kg, subtotal_25kg, total_items, total_kg, grand_total, total_harga, discount_percent, discount_amount, source_transaksi, notes, created_at, updated_at) VALUES
 (1, CONCAT('TRX-', DATE_FORMAT(CURDATE() - INTERVAL 2 DAY, '%Y%m%d'), '-0001'), CONCAT(CURDATE() - INTERVAL 2 DAY, ' 09:15:00'), 1, 1, 'Pembeli Internal A', 2, 1, 0, 14200.00, 14100.00, 14000.00, 142000.00, 141000.00, 0.00, 3, 20.00, 283000.00, 283000.00, 0.00, 0.00, 'template', 'Data contoh laporan.', NOW(), NOW()),

@@ -167,9 +167,9 @@ class QuickTemplatesController extends BaseController
     {
         $rules = [
             'template_name' => 'required|max_length[150]',
-            'qty_5kg' => 'required|integer|greater_than_equal_to[0]',
-            'qty_10kg' => 'required|integer|greater_than_equal_to[0]',
-            'qty_25kg' => 'required|integer|greater_than_equal_to[0]',
+            'qty_5kg' => 'permit_empty|integer|greater_than_equal_to[0]',
+            'qty_10kg' => 'permit_empty|integer|greater_than_equal_to[0]',
+            'qty_25kg' => 'permit_empty|integer|greater_than_equal_to[0]',
             'discount_percent' => 'permit_empty|decimal|greater_than_equal_to[0]|less_than_equal_to[100]',
             'is_active' => 'permit_empty|in_list[0,1]',
         ];
@@ -187,12 +187,17 @@ class QuickTemplatesController extends BaseController
 
     private function normalizeTemplatePayload(array $post): array
     {
+        $normalizeQty = static function ($value): string {
+            $trimmed = trim((string) ($value ?? ''));
+            return $trimmed === '' ? '0' : $trimmed;
+        };
+
         $normalized = [
             'template_name' => trim((string) ($post['template_name'] ?? '')),
-            'qty_5kg' => (string) ($post['qty_5kg'] ?? '0'),
-            'qty_10kg' => (string) ($post['qty_10kg'] ?? '0'),
-            'qty_25kg' => (string) ($post['qty_25kg'] ?? '0'),
-            'discount_percent' => trim((string) ($post['discount_percent'] ?? '0')) === '' ? '0' : (string) $post['discount_percent'],
+            'qty_5kg' => $normalizeQty($post['qty_5kg'] ?? null),
+            'qty_10kg' => $normalizeQty($post['qty_10kg'] ?? null),
+            'qty_25kg' => $normalizeQty($post['qty_25kg'] ?? null),
+            'discount_percent' => $normalizeQty($post['discount_percent'] ?? null),
             'is_active' => (string) ($post['is_active'] ?? '1'),
         ];
 

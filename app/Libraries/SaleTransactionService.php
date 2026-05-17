@@ -46,11 +46,8 @@ class SaleTransactionService
                 throw new RuntimeException('Template tidak ditemukan.');
             }
 
-            if ($customerName === '') {
-                throw new RuntimeException('Nama pelanggan wajib diisi saat memakai template cepat.');
-            }
-
-            if ($this->salesTransactionModel->existsTemplateCustomer($templateId, $customerName)) {
+            // Nama pelanggan opsional di mode template. Validasi unique hanya berlaku jika nama diisi.
+            if ($customerName !== '' && $this->salesTransactionModel->existsTemplateCustomer($templateId, $customerName)) {
                 throw new RuntimeException("Pelanggan '" . $customerName . "' sudah pernah memakai template ini. Setiap pelanggan hanya boleh 1x per template.");
             }
 
@@ -73,7 +70,7 @@ class SaleTransactionService
         $setting = $this->saleLimitSettingModel->getCurrentSetting();
 
         if ($setting !== null && (int) $setting['is_enabled'] === 1 && $totals['total_kg'] > (float) $setting['max_total_kg']) {
-            throw new RuntimeException('Transaksi melebihi batas maksimum ' . format_kg($setting['max_total_kg']) . '.');
+            throw new RuntimeException('Transaksi melebihi batas maksimum ' . number_format((int) $setting['max_total_kg'], 0, ',', '.') . ' kg.');
         }
 
         $gross = (float) $totals['grand_total'];

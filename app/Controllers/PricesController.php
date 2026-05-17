@@ -43,11 +43,17 @@ class PricesController extends BaseController
                 ->with('errors', $this->validator->getErrors());
         }
 
+        $newBase = (float) $post['base_price'];
+        $packages = $this->productModel->getFixedPackagesWithCurrentPrice();
+        $currentBase = isset($packages[25]) ? (float) ($packages[25]['current_price'] ?? 0) : 0.0;
+
+        if ($newBase === $currentBase) {
+            return redirect()->to('/admin/prices')
+                ->with('error', 'Harga pokok tidak berubah.');
+        }
+
         try {
-            $this->productPriceModel->setBasePrice(
-                (float) $post['base_price'],
-                (int) current_user_id()
-            );
+            $this->productPriceModel->setBasePrice($newBase, (int) current_user_id());
         } catch (RuntimeException $exception) {
             return redirect()->to('/admin/prices')->with('error', $exception->getMessage());
         }

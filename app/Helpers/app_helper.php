@@ -120,6 +120,8 @@ if (!function_exists('sale_limit_text')) {
             return 'Mode pembatasan penjualan tidak aktif.';
         }
 
-        return 'Mode pembatasan aktif dengan maksimum ' . format_kg($setting['max_total_kg'] ?? 0) . ' per transaksi.';
+        $maxKg = (int) ($setting['max_total_kg'] ?? 0);
+
+        return 'Mode pembatasan aktif dengan maksimum ' . number_format($maxKg, 0, ',', '.') . ' kg per transaksi.';
     }
 }
