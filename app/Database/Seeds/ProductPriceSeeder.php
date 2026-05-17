@@ -11,11 +11,16 @@ class ProductPriceSeeder extends Seeder
     {
         $now = Time::now('Asia/Makassar');
 
+        // Model harga: base price = harga per kg untuk Beras 25 kg.
+        //   harga_25kg = base
+        //   harga_10kg = base + PRICE_STEP_PER_KG
+        //   harga_5kg  = base + (PRICE_STEP_PER_KG * 2)
         $prices = [
             [
                 'id' => 1,
-                'product_id' => 1,
-                'price' => 78000,
+                'product_id' => 1, // Beras 5 Kg
+                'price' => 14200,
+                'price_change' => 0,
                 'is_current' => 1,
                 'updated_by' => 1,
                 'created_at' => $now->toDateTimeString(),
@@ -23,8 +28,9 @@ class ProductPriceSeeder extends Seeder
             ],
             [
                 'id' => 2,
-                'product_id' => 2,
-                'price' => 150000,
+                'product_id' => 2, // Beras 10 Kg
+                'price' => 14100,
+                'price_change' => 0,
                 'is_current' => 1,
                 'updated_by' => 1,
                 'created_at' => $now->toDateTimeString(),
@@ -32,8 +38,9 @@ class ProductPriceSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'product_id' => 3,
-                'price' => 360000,
+                'product_id' => 3, // Beras 25 Kg (harga pokok)
+                'price' => 14000,
+                'price_change' => 0,
                 'is_current' => 1,
                 'updated_by' => 1,
                 'created_at' => $now->toDateTimeString(),

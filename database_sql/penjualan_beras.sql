@@ -134,27 +134,32 @@ INSERT INTO product_prices (id, product_id, price, price_change, is_current, upd
 (3, 3, 14000.00, 0.00, 1, 1, NOW(), NOW());
 
 INSERT INTO quick_templates (id, template_code, template_name, qty_5kg, qty_10kg, qty_25kg, discount_percent, is_active, created_by, created_at, updated_at) VALUES
-(1, 'TPL-001', 'Paket Operasional Ringkas', 2, 1, 0, 0.00, 1, 1, NOW(), NOW()),
-(2, 'TPL-002', 'Paket Campuran Penjualan', 1, 0, 1, 5.00, 1, 1, NOW(), NOW());
+(1, 'TPL-001', 'Paket Operasional Ringkas', 2, 1, 0, 10.00, 1, 1, NOW(), NOW()),
+(2, 'TPL-002', 'Paket Campuran Penjualan', 0, 2, 1, 15.00, 1, 1, NOW(), NOW()),
+(3, 'TPL-003', 'Paket Grosir Mini',        0, 0, 2, 18.00, 1, 1, NOW(), NOW()),
+(4, 'TPL-004', 'Paket Hemat Keluarga',     4, 2, 0, 12.00, 1, 1, NOW(), NOW());
 
 INSERT INTO quick_template_items (template_id, product_id, quantity) VALUES
 (1, 1, 2),
 (1, 2, 1),
-(2, 1, 1),
-(2, 3, 1);
+(2, 2, 2),
+(2, 3, 1),
+(3, 3, 2),
+(4, 1, 4),
+(4, 2, 2);
 
 INSERT INTO sale_limit_settings (id, is_enabled, max_total_kg, updated_by, created_at, updated_at) VALUES
 (1, 0, 100, 1, NOW(), NOW());
 
 INSERT INTO sales_transactions (id, invoice_number, transaction_date, created_by, template_id, customer_name, qty_5kg, qty_10kg, qty_25kg, price_5kg, price_10kg, price_25kg, subtotal_5kg, subtotal_10kg, subtotal_25kg, total_items, total_kg, grand_total, total_harga, discount_percent, discount_amount, source_transaksi, notes, created_at, updated_at) VALUES
 (1, CONCAT('TRX-', DATE_FORMAT(CURDATE() - INTERVAL 2 DAY, '%Y%m%d'), '-0001'), CONCAT(CURDATE() - INTERVAL 2 DAY, ' 09:15:00'), 1, 1, 'Pembeli Internal A', 2, 1, 0, 14200.00, 14100.00, 14000.00, 142000.00, 141000.00, 0.00, 3, 20.00, 283000.00, 283000.00, 0.00, 0.00, 'template', 'Data contoh laporan.', NOW(), NOW()),
-(2, CONCAT('TRX-', DATE_FORMAT(CURDATE() - INTERVAL 1 DAY, '%Y%m%d'), '-0001'), CONCAT(CURDATE() - INTERVAL 1 DAY, ' 10:45:00'), 2, 2, 'Pembeli Internal B', 1, 0, 1, 14200.00, 14100.00, 14000.00, 71000.00, 0.00, 350000.00, 2, 30.00, 399950.00, 399950.00, 5.00, 21050.00, 'template', 'Transaksi contoh pegawai.', NOW(), NOW()),
+(2, CONCAT('TRX-', DATE_FORMAT(CURDATE() - INTERVAL 1 DAY, '%Y%m%d'), '-0001'), CONCAT(CURDATE() - INTERVAL 1 DAY, ' 10:45:00'), 2, 2, 'Pembeli Internal B', 0, 2, 1, 14200.00, 14100.00, 14000.00, 0.00, 282000.00, 350000.00, 3, 45.00, 632000.00, 632000.00, 0.00, 0.00, 'template', 'Transaksi contoh pegawai.', NOW(), NOW()),
 (3, CONCAT('TRX-', DATE_FORMAT(CURDATE(), '%Y%m%d'), '-0001'), CONCAT(CURDATE(), ' 14:20:00'), 2, NULL, 'Pembeli Internal C', 1, 1, 0, 14200.00, 14100.00, 14000.00, 71000.00, 141000.00, 0.00, 2, 15.00, 212000.00, 212000.00, 0.00, 0.00, 'manual', 'Transaksi manual contoh.', NOW(), NOW());
 
 INSERT INTO sales_transaction_items (transaction_id, product_id, product_name_snapshot, weight_kg_snapshot, unit_price_snapshot, quantity, subtotal, total_kg_item) VALUES
 (1, 1, 'Beras 5 Kg', 5.00, 14200.00, 2, 142000.00, 10.00),
 (1, 2, 'Beras 10 Kg', 10.00, 14100.00, 1, 141000.00, 10.00),
-(2, 1, 'Beras 5 Kg', 5.00, 14200.00, 1, 71000.00, 5.00),
+(2, 2, 'Beras 10 Kg', 10.00, 14100.00, 2, 282000.00, 20.00),
 (2, 3, 'Beras 25 Kg', 25.00, 14000.00, 1, 350000.00, 25.00),
 (3, 1, 'Beras 5 Kg', 5.00, 14200.00, 1, 71000.00, 5.00),
 (3, 2, 'Beras 10 Kg', 10.00, 14100.00, 1, 141000.00, 10.00);

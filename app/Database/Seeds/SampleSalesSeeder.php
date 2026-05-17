@@ -16,6 +16,11 @@ class SampleSalesSeeder extends Seeder
             (clone $today)->setTime(14, 20, 0),
         ];
 
+        // Harga per kg (base price 25kg = 14000).
+        $price5  = 14200;
+        $price10 = 14100;
+        $price25 = 14000;
+
         $transactions = [
             1 => [
                 'id' => 1,
@@ -28,15 +33,17 @@ class SampleSalesSeeder extends Seeder
                 'qty_5kg' => 2,
                 'qty_10kg' => 1,
                 'qty_25kg' => 0,
-                'price_5kg' => 78000,
-                'price_10kg' => 150000,
-                'price_25kg' => 360000,
-                'subtotal_5kg' => 156000,
-                'subtotal_10kg' => 150000,
+                'price_5kg' => $price5,
+                'price_10kg' => $price10,
+                'price_25kg' => $price25,
+                'subtotal_5kg' => 5 * 2 * $price5,   // 142000
+                'subtotal_10kg' => 10 * 1 * $price10, // 141000
                 'subtotal_25kg' => 0,
                 'total_kg' => 20,
-                'total_harga' => 306000,
-                'grand_total' => 306000,
+                'total_harga' => 283000,
+                'grand_total' => 283000,
+                'discount_percent' => 0,
+                'discount_amount' => 0,
                 'source_transaksi' => 'template',
                 'notes' => 'Data contoh laporan.',
                 'created_at' => $dates[0]->toDateTimeString(),
@@ -53,15 +60,17 @@ class SampleSalesSeeder extends Seeder
                 'qty_5kg' => 0,
                 'qty_10kg' => 2,
                 'qty_25kg' => 1,
-                'price_5kg' => 78000,
-                'price_10kg' => 150000,
-                'price_25kg' => 360000,
+                'price_5kg' => $price5,
+                'price_10kg' => $price10,
+                'price_25kg' => $price25,
                 'subtotal_5kg' => 0,
-                'subtotal_10kg' => 300000,
-                'subtotal_25kg' => 360000,
+                'subtotal_10kg' => 10 * 2 * $price10, // 282000
+                'subtotal_25kg' => 25 * 1 * $price25, // 350000
                 'total_kg' => 45,
-                'total_harga' => 660000,
-                'grand_total' => 660000,
+                'total_harga' => 632000,
+                'grand_total' => 632000,
+                'discount_percent' => 0,
+                'discount_amount' => 0,
                 'source_transaksi' => 'template',
                 'notes' => 'Transaksi contoh pegawai.',
                 'created_at' => $dates[1]->toDateTimeString(),
@@ -78,15 +87,17 @@ class SampleSalesSeeder extends Seeder
                 'qty_5kg' => 1,
                 'qty_10kg' => 1,
                 'qty_25kg' => 0,
-                'price_5kg' => 78000,
-                'price_10kg' => 150000,
-                'price_25kg' => 360000,
-                'subtotal_5kg' => 78000,
-                'subtotal_10kg' => 150000,
+                'price_5kg' => $price5,
+                'price_10kg' => $price10,
+                'price_25kg' => $price25,
+                'subtotal_5kg' => 5 * 1 * $price5,   // 71000
+                'subtotal_10kg' => 10 * 1 * $price10, // 141000
                 'subtotal_25kg' => 0,
                 'total_kg' => 15,
-                'total_harga' => 228000,
-                'grand_total' => 228000,
+                'total_harga' => 212000,
+                'grand_total' => 212000,
+                'discount_percent' => 0,
+                'discount_amount' => 0,
                 'source_transaksi' => 'manual',
                 'notes' => 'Transaksi manual contoh.',
                 'created_at' => $dates[2]->toDateTimeString(),
@@ -128,9 +139,9 @@ class SampleSalesSeeder extends Seeder
                 'product_id' => 1,
                 'product_name_snapshot' => 'Beras 5 Kg',
                 'weight_kg_snapshot' => 5,
-                'unit_price_snapshot' => 78000,
+                'unit_price_snapshot' => $price5,
                 'quantity' => 2,
-                'subtotal' => 156000,
+                'subtotal' => 5 * 2 * $price5,
                 'total_kg_item' => 10,
             ],
             [
@@ -138,9 +149,9 @@ class SampleSalesSeeder extends Seeder
                 'product_id' => 2,
                 'product_name_snapshot' => 'Beras 10 Kg',
                 'weight_kg_snapshot' => 10,
-                'unit_price_snapshot' => 150000,
+                'unit_price_snapshot' => $price10,
                 'quantity' => 1,
-                'subtotal' => 150000,
+                'subtotal' => 10 * 1 * $price10,
                 'total_kg_item' => 10,
             ],
             [
@@ -148,9 +159,9 @@ class SampleSalesSeeder extends Seeder
                 'product_id' => 2,
                 'product_name_snapshot' => 'Beras 10 Kg',
                 'weight_kg_snapshot' => 10,
-                'unit_price_snapshot' => 150000,
+                'unit_price_snapshot' => $price10,
                 'quantity' => 2,
-                'subtotal' => 300000,
+                'subtotal' => 10 * 2 * $price10,
                 'total_kg_item' => 20,
             ],
             [
@@ -158,9 +169,9 @@ class SampleSalesSeeder extends Seeder
                 'product_id' => 3,
                 'product_name_snapshot' => 'Beras 25 Kg',
                 'weight_kg_snapshot' => 25,
-                'unit_price_snapshot' => 360000,
+                'unit_price_snapshot' => $price25,
                 'quantity' => 1,
-                'subtotal' => 360000,
+                'subtotal' => 25 * 1 * $price25,
                 'total_kg_item' => 25,
             ],
             [
@@ -168,9 +179,9 @@ class SampleSalesSeeder extends Seeder
                 'product_id' => 1,
                 'product_name_snapshot' => 'Beras 5 Kg',
                 'weight_kg_snapshot' => 5,
-                'unit_price_snapshot' => 78000,
+                'unit_price_snapshot' => $price5,
                 'quantity' => 1,
-                'subtotal' => 78000,
+                'subtotal' => 5 * 1 * $price5,
                 'total_kg_item' => 5,
             ],
             [
@@ -178,9 +189,9 @@ class SampleSalesSeeder extends Seeder
                 'product_id' => 2,
                 'product_name_snapshot' => 'Beras 10 Kg',
                 'weight_kg_snapshot' => 10,
-                'unit_price_snapshot' => 150000,
+                'unit_price_snapshot' => $price10,
                 'quantity' => 1,
-                'subtotal' => 150000,
+                'subtotal' => 10 * 1 * $price10,
                 'total_kg_item' => 10,
             ],
         ]);
