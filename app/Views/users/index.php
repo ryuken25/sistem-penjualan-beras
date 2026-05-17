@@ -1,10 +1,7 @@
 <?= $this->extend('layouts/app') ?>
 
 <?= $this->section('content') ?>
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-    <div>
-        <div class="page-subtitle">Kelola data admin dan pegawai yang dapat mengakses sistem.</div>
-    </div>
+<div class="d-flex justify-content-end mb-4">
     <a href="<?= site_url('/admin/users/create') ?>" class="btn btn-primary">
         <i class="bi bi-plus-circle me-2"></i>Tambah Pengguna
     </a>

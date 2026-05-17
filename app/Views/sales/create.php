@@ -21,14 +21,9 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
             <div class="card-body p-4">
                 <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
                     <div>
-                        <h2 class="h4 mb-1">
+                        <h2 class="h4 mb-0">
                             <?= $isTemplateMode ? 'Transaksi Berdasarkan Template Cepat' : 'Transaksi Penjualan Manual' ?>
                         </h2>
-                        <div class="page-subtitle">
-                            <?= $isTemplateMode
-                                ? 'Pilih template aktif, cek ringkasan pembelian, lalu konfirmasi transaksi.'
-                                : 'Masukkan jumlah untuk kemasan 5 kg, 10 kg, dan 25 kg. Sistem menghitung total secara otomatis.' ?>
-                        </div>
                     </div>
                     <?php if (!$isTemplateMode): ?>
                         <a href="<?= site_url('/sales/template') ?>" class="btn btn-outline-primary">
@@ -55,7 +50,6 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
                             <label class="form-label">Tanggal Transaksi</label>
                             <input type="datetime-local" name="transaction_date" id="transaction_date"
                                 class="form-control" value="<?= esc((string) $transactionDate) ?>" readonly>
-                            <div class="small-muted mt-1">Tanggal dan jam transaksi diisi otomatis oleh sistem.</div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Nama Pelanggan (Opsional)</label>
@@ -71,9 +65,7 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
                         <div class="mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div>
-                                    <h3 class="h5 mb-1">Daftar Template Cepat</h3>
-                                    <div class="small-muted">Pilih salah satu template aktif. Jumlah akan terisi otomatis
-                                        sesuai template.</div>
+                                    <h3 class="h5 mb-0">Daftar Template Cepat</h3>
                                 </div>
                             </div>
 
@@ -122,9 +114,7 @@ $isTemplateMode = ($transactionMode ?? 'manual') === 'template';
                             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                                 <div>
                                     <h3 class="h5 mb-1">Input Jumlah Kemasan Beras</h3>
-                                    <div class="small-muted">Isi jumlah masing-masing kemasan. Minimal satu jumlah harus
-                                        lebih
-                                        dari 0.</div>
+                                    <div class="small-muted">Minimal satu jumlah harus lebih dari 0.</div>
                                 </div>
                             </div>
 

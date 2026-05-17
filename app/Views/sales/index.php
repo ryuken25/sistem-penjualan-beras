@@ -1,21 +1,12 @@
 <?= $this->extend('layouts/app') ?>
 
 <?= $this->section('content') ?>
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-    <div>
-        <div class="page-subtitle">
-            <?= $isAdmin ? 'Riwayat transaksi penjualan yang tersimpan di database dengan snapshot harga pada saat transaksi.' : 'Riwayat transaksi pegawai hanya menampilkan transaksi yang dicatat pada hari ini.' ?>
-        </div>
-        <?php if (!empty($showTodayOnlyNotice)): ?>
-            <div class="small-muted mt-1">Daftar berikut hanya berisi transaksi hari ini.</div>
-        <?php endif; ?>
+<?php if (!empty($showTodayOnlyNotice)): ?>
+    <div class="alert alert-info mb-4">
+        <i class="bi bi-info-circle me-1"></i>
+        Anda hanya bisa melihat transaksi hari ini.
     </div>
-    <?php if ($isAdmin): ?>
-        <a href="<?= site_url('/sales/create') ?>" class="btn btn-primary">
-            <i class="bi bi-plus-circle me-2"></i>Input Transaksi Baru
-        </a>
-    <?php endif; ?>
-</div>
+<?php endif; ?>
 
 <div class="card card-soft">
     <div class="card-body">
@@ -31,13 +22,13 @@
                             <th>Detail Item</th>
                             <th>Total KG</th>
                             <th>Total Harga</th>
-                            <th class="text-center" style="width: 110px;">Invoice</th>
+                            <th class="text-center" style="width: 130px;">Aksi</th>
                         <?php else: ?>
                             <th>Jam</th>
                             <th>Nama Pelanggan</th>
                             <th>Ringkasan Item</th>
                             <th>Total Harga</th>
-                            <th class="text-center" style="width: 110px;">Invoice</th>
+                            <th class="text-center" style="width: 90px;">Aksi</th>
                         <?php endif; ?>
                     </tr>
                 </thead>
@@ -88,13 +79,23 @@
                                     <td>
                                         <?= format_rupiah($transaction['grand_total']) ?>
                                     </td>
-                                    <td class="text-center">
-                                        <a href="<?= site_url('/sales/invoice/' . $transaction['id']) ?>"
-                                            target="_blank" rel="noopener"
-                                            class="btn btn-sm btn-outline-primary"
-                                            title="Buka invoice di tab baru">
-                                            <i class="bi bi-receipt"></i> Invoice
-                                        </a>
+                                    <td>
+                                        <div class="d-flex gap-1 justify-content-center">
+                                            <a href="<?= site_url('/sales/invoice/' . (int) $transaction['id']) ?>"
+                                                target="_blank" rel="noopener"
+                                                class="btn btn-sm btn-outline-secondary"
+                                                title="Lihat invoice">
+                                                <i class="bi bi-receipt"></i>
+                                            </a>
+                                            <form action="<?= site_url('/admin/sales/delete/' . (int) $transaction['id']) ?>" method="post"
+                                                onsubmit="return confirm('Hapus transaksi <?= esc($transaction['invoice_number']) ?>? Tindakan ini tidak bisa dibatalkan.');"
+                                                class="d-inline">
+                                                <?= csrf_field() ?>
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus transaksi">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 <?php else: ?>
                                     <?php
@@ -122,11 +123,11 @@
                                         <?= format_rupiah($transaction['total_harga'] ?? $transaction['grand_total']) ?>
                                     </td>
                                     <td class="text-center">
-                                        <a href="<?= site_url('/sales/invoice/' . $transaction['id']) ?>"
+                                        <a href="<?= site_url('/sales/invoice/' . (int) $transaction['id']) ?>"
                                             target="_blank" rel="noopener"
-                                            class="btn btn-sm btn-outline-primary"
-                                            title="Buka invoice di tab baru">
-                                            <i class="bi bi-receipt"></i> Invoice
+                                            class="btn btn-sm btn-outline-secondary"
+                                            title="Lihat invoice">
+                                            <i class="bi bi-receipt"></i>
                                         </a>
                                     </td>
                                 <?php endif; ?>

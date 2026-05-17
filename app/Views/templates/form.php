@@ -18,10 +18,9 @@ $displayCode = $template['template_code'] ?? ($nextCode ?? '—');
         <div class="card card-soft">
             <div class="card-body p-4">
                 <div class="mb-4">
-                    <h2 class="h4 mb-1">
+                    <h2 class="h4 mb-0">
                         <?= $template === null ? 'Tambah Template Cepat' : 'Ubah Template Cepat' ?>
                     </h2>
-                    <div class="page-subtitle">Template berisi jumlah tetap untuk kemasan 5 kg, 10 kg, dan 25 kg.</div>
                 </div>
 
                 <form action="<?= site_url($formAction) ?>" method="post" id="templateForm">
@@ -61,9 +60,7 @@ $displayCode = $template['template_code'] ?? ($nextCode ?? '—');
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                                 <div>
-                                    <h3 class="h5 mb-1">Isi Jumlah Template</h3>
-                                    <div class="small-muted">Admin hanya menentukan jumlah untuk kemasan tetap yang
-                                        tersedia di sistem. Diskon yang otomatis diterapkan saat pegawai menjual template ini.</div>
+                                    <h3 class="h5 mb-0">Isi Jumlah Template</h3>
                                 </div>
                             </div>
 
@@ -90,8 +87,6 @@ $displayCode = $template['template_code'] ?? ($nextCode ?? '—');
                                                     <div class="fw-semibold">Beras
                                                         <?= esc((string) $weight) ?> kg
                                                     </div>
-                                                    <div class="small-muted">Harga mengikuti pengaturan admin saat transaksi
-                                                        dipakai</div>
                                                 </td>
                                                 <td>
                                                     <input type="number" min="0" step="1" name="<?= esc($field) ?>"

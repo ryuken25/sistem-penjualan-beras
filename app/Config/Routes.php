@@ -56,4 +56,6 @@ $routes->group('admin', ['filter' => 'role:admin'], static function (RouteCollec
     $routes->post('sale-limit/update', 'SaleLimitController::update');
 
     $routes->get('reports', 'ReportsController::index');
+
+    $routes->post('sales/delete/(:num)', 'SalesController::delete/$1');
 });

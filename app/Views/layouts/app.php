@@ -20,10 +20,9 @@
             <nav class="navbar navbar-expand-lg border-bottom topbar px-4 py-3 sticky-top">
                 <div class="container-fluid px-0">
                     <div>
-                        <h1 class="h4 mb-1 section-title">
+                        <h1 class="h4 mb-0 section-title">
                             <?= esc($title ?? 'Dashboard') ?>
                         </h1>
-                        <div class="small-muted">Sistem Informasi Penjualan Beras UD Tulus Sari Merta</div>
                     </div>
                     <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
                         <a href="<?= site_url('/dashboard') ?>" class="btn btn-sm btn-outline-primary me-2">

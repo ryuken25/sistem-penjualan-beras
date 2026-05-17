@@ -60,8 +60,7 @@ $derived = derive_package_prices($basePrice);
 <div class="card card-soft mb-4">
     <div class="card-body">
         <div class="mb-3">
-            <h2 class="h5 mb-1">Harga Aktif Kemasan</h2>
-            <div class="small-muted">Otomatis menyesuaikan dari harga pokok 25 kg.</div>
+            <h2 class="h5 mb-0">Harga Aktif Kemasan</h2>
         </div>
 
         <div class="row g-3">
@@ -103,8 +102,7 @@ $derived = derive_package_prices($basePrice);
 <div class="card card-soft">
     <div class="card-body">
         <div class="mb-3">
-            <h2 class="h5 mb-1">Riwayat Perubahan Harga Pokok</h2>
-            <div class="small-muted">Hanya menampilkan riwayat harga pokok (Beras 25 kg per kg).</div>
+            <h2 class="h5 mb-0">Riwayat Perubahan Harga Pokok</h2>
         </div>
 
         <div class="table-responsive">

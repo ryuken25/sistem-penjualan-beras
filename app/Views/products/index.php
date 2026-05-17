@@ -1,8 +1,7 @@
 <?= $this->extend('layouts/app') ?>
 
 <?= $this->section('content') ?>
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-    <div class="page-subtitle">Produk difokuskan pada kemasan 5 kg, 10 kg, dan 25 kg sesuai proposal.</div>
+<div class="d-flex justify-content-end mb-4">
     <a href="<?= site_url('/admin/products/create') ?>" class="btn btn-primary">
         <i class="bi bi-plus-circle me-2"></i>Tambah Produk
     </a>

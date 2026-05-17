@@ -1,9 +1,7 @@
 <?= $this->extend('layouts/app') ?>
 
 <?= $this->section('content') ?>
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-    <div class="page-subtitle">Template transaksi cepat berisi kombinasi produk dan jumlah default untuk mempercepat
-        input transaksi.</div>
+<div class="d-flex justify-content-end mb-4">
     <a href="<?= site_url('/admin/templates/create') ?>" class="btn btn-primary">
         <i class="bi bi-plus-circle me-2"></i>Tambah Template
     </a>

@@ -18,7 +18,13 @@
             <a class="nav-link <?= active_menu('dashboard', true) ?>" href="<?= site_url('/dashboard') ?>">
                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
             </a>
-            <a class="nav-link <?= active_menu('sales') ?>" href="<?= site_url('/sales') ?>">
+            <a class="nav-link <?= active_menu('sales/create', true) ?>" href="<?= site_url('/sales/create') ?>">
+                <i class="bi bi-receipt me-2"></i> Penjualan
+            </a>
+            <a class="nav-link <?= active_menu('sales/template', true) ?>" href="<?= site_url('/sales/template') ?>">
+                <i class="bi bi-lightning-charge me-2"></i> Template Cepat
+            </a>
+            <a class="nav-link <?= active_menu('sales', true) ?>" href="<?= site_url('/sales') ?>">
                 <i class="bi bi-clock-history me-2"></i> Riwayat Transaksi
             </a>
             <a class="nav-link <?= active_menu('profile') ?>" href="<?= site_url('/profile') ?>">
@@ -35,7 +41,7 @@
                 <i class="bi bi-cash-stack me-2"></i> Kelola Harga
             </a>
             <a class="nav-link <?= active_menu('admin/templates') ?>" href="<?= site_url('/admin/templates') ?>">
-                <i class="bi bi-lightning-charge me-2"></i> Template Cepat
+                <i class="bi bi-lightning-charge-fill me-2"></i> Kelola Template
             </a>
             <a class="nav-link <?= active_menu('admin/sale-limit') ?>" href="<?= site_url('/admin/sale-limit') ?>">
                 <i class="bi bi-sliders me-2"></i> Mode Limit

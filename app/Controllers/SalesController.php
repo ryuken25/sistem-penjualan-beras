@@ -110,6 +110,26 @@ class SalesController extends BaseController
             ->with('success', 'Transaksi berhasil disimpan dengan nomor ' . $transaction['transaction']['invoice_number'] . '.');
     }
 
+    public function delete(int $id)
+    {
+        if (!is_admin()) {
+            return redirect()->to('/sales')->with('error', 'Hanya admin yang dapat menghapus transaksi.');
+        }
+
+        $transaction = $this->salesTransactionModel->find($id);
+        if ($transaction === null) {
+            return redirect()->to('/sales')->with('error', 'Transaksi tidak ditemukan.');
+        }
+
+        $invoiceNumber = (string) $transaction['invoice_number'];
+
+        // Fallback: hapus items dulu jika FK CASCADE belum aktif di DB lama.
+        $this->salesTransactionItemModel->where('transaction_id', $id)->delete();
+        $this->salesTransactionModel->delete($id);
+
+        return redirect()->to('/sales')->with('success', 'Transaksi ' . $invoiceNumber . ' berhasil dihapus.');
+    }
+
     public function invoice(int $id)
     {
         $userId = is_admin() ? null : current_user_id();

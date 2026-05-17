@@ -6,8 +6,7 @@
         <div class="card card-soft">
             <div class="card-body p-4">
                 <div class="mb-4">
-                    <h2 class="h5 mb-1">Profil Pengguna</h2>
-                    <div class="small-muted">Ubah nama, username, foto profil, dan password akun Anda.</div>
+                    <h2 class="h5 mb-0">Profil Pengguna</h2>
                 </div>
 
                 <form action="<?= site_url('/profile/update') ?>" method="post" enctype="multipart/form-data">
